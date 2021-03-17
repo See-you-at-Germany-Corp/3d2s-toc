@@ -1,14 +1,14 @@
-import React from "react"; 
+import React from "react";
+import { RecoilRoot } from "recoil";
 import "./App.css";
-import Test from "./Move/movetest";
+import ClampMachine from "./ClampMachine";
 
-const App: React.FC = () => {
+const App = (): React.ReactElement => {
     return (
-        <>
-            <Test/>
-        </>
-        
+        <RecoilRoot>
+            <ClampMachine />
+        </RecoilRoot>
     );
-}
+};
 
 export default App;

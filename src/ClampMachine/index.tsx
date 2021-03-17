@@ -2,12 +2,12 @@ import React ,{ useState} from 'react'
 import './style.css'
 import { motion } from "framer-motion"
 
-const Test:React.FC = () => {
+const ClampMachine:React.FC = () => {
     const [position, setPosition] = useState({x:0,y:0});
 
     const onKeyDown = React.useCallback(
         ({ key }: KeyboardEvent) => {
-            switch (key) {
+            switch (key.toLowerCase()) {
                 case "d":
                     setPosition({x : position.x + 100, y: position.y})
                     break;
@@ -40,4 +40,4 @@ const Test:React.FC = () => {
 
 
 
-export default Test
+export default ClampMachine
