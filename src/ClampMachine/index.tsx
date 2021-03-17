@@ -6,18 +6,18 @@ const ClampMachine:React.FC = () => {
     const [position, setPosition] = useState({x:0,y:0});
 
     const onKeyDown = React.useCallback(
-        ({ key }: KeyboardEvent) => {
-            switch (key.toLowerCase()) {
-                case "d":
+        ( key : KeyboardEvent) => {
+            switch (key.code) {
+                case "KeyD":
                     setPosition({x : position.x + 100, y: position.y})
                     break;
-                case "a":
+                case "KeyA":
                     setPosition({x : position.x - 100, y: position.y})
                     break;
-                case "w":
+                case "KeyW":
                     setPosition({x : position.x , y: position.y - 100})
                     break;
-                case "s":
+                case "KeyS":
                     setPosition({x : position.x , y: position.y + 100})
                     break;
             }
