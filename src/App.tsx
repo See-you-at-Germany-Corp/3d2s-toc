@@ -1,7 +1,7 @@
 import React from "react";
 import { RecoilRoot } from "recoil";
 import "./App.css";
-import ClampMachine from "./ClampMachine";
+import ClampMachine from "./components/ClampMachine";
 
 const App = (): React.ReactElement => {
     return (
