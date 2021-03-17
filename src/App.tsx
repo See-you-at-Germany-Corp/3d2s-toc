@@ -2,8 +2,14 @@ import React from "react";
 import { RecoilRoot } from "recoil";
 import "./App.css";
 
-const App: React.FC = () => {
-    return <RecoilRoot></RecoilRoot>;
+import Machine from "./pages/machine";
+
+const App = (): React.ReactElement => {
+    return (
+        <RecoilRoot>
+            <Machine />
+        </RecoilRoot>
+    );
 };
 
 export default App;
