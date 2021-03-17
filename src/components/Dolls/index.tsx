@@ -1,38 +1,13 @@
 import React from "react";
 import _ from "lodash";
 
-import { DollContainer, DollBox } from "./styles";
+import { IDollData, dollDatas } from './doll_data'
 
-interface IDollData {
-    id: number;
-    name: string;
-    img: string;
-}
+import { DollContainer, DollBox } from "./styles";
 
 interface IDollProps {
     dollData: IDollData;
 }
-
-const dollDatas: IDollData[] = [
-    {
-        id: 1,
-        name: "doll_1",
-        img:
-            "https://cdn.discordapp.com/attachments/817783466379968572/821678430792974346/pngtree-cartoon-bear-doll-image_1325813-removebg-preview.png",
-    },
-    {
-        id: 2,
-        name: "doll_2",
-        img:
-            "https://cdn.discordapp.com/attachments/817783466379968572/821678430792974346/pngtree-cartoon-bear-doll-image_1325813-removebg-preview.png",
-    },
-    {
-        id: 3,
-        name: "doll_3",
-        img:
-            "https://cdn.discordapp.com/attachments/817783466379968572/821678430792974346/pngtree-cartoon-bear-doll-image_1325813-removebg-preview.png",
-    },
-];
 
 const Doll = (props: IDollProps): React.ReactElement => {
     const dollData = props.dollData;
@@ -60,14 +35,14 @@ const DollGroup = (): React.ReactElement => {
         items: randomDollItems(_.random(15, 20)),
     });
 
-    console.log(dollState.items);
+    // console.log(dollState.items);
 
     return (
         <DollContainer>
-            {_.map(dollState.items, (dollType: number, index: number) => {
+            {/* {_.map(dollState.items, (dollType: number, index: number) => {
                 const dollData: IDollData = dollDatas[dollType];
                 return <Doll key={index} dollData={dollData} />;
-            })}
+            })} */}
             <h1>Hello from Dolls.</h1>
         </DollContainer>
     );
