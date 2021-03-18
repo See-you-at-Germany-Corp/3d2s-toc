@@ -1,6 +1,13 @@
+.machine {
+    background: lightgreen;
+    /* display: grid;
+    grid-template-columns: auto auto auto auto; */
+    width: 800px;
+    height: 800px;
+}
 
 .move {
-    height: 30px;
-    width: 30px;
+    position: absolute;
+    z-index: 100; 
     background-color: red;
 }
