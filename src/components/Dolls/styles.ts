@@ -2,23 +2,25 @@ import _ from "lodash";
 import styled, { keyframes } from "styled-components";
 
 export const DollContainer = styled.div`
-    background-color: lightpink;
+    /* background-color: lightpink; */
+    background: #fbfbfb;
     display: grid;
     grid-template-columns: auto auto auto auto auto;
     grid-template-rows: 200px 200px 200px 200px 200px;
     width: 1000px;
     height: 1000px;
+    padding: 25px;
 `;
 
-const randomDeg = `${(_.random(0, 36) * 10) / _.random(2, 9)}deg`; 
+const randomDeg = `${(_.random(0, 36) * 10) / _.random(2, 9)}deg`;
 
 const shake = keyframes`
   50% { transform: rotate(${randomDeg})}
 }`;
 
 interface IDollBoxProps {
-    backgroundImg: string;
-    rotateString: string;
+    backgroundImg?: string;
+    rotateString?: string;
 }
 
 export const DollBox = styled.div<IDollBoxProps>`

@@ -9,15 +9,16 @@ const Clamp = (): React.ReactElement => {
     const [clampPos, setClampPos] = useRecoilState(clampPositionStore);
     const [clampState, setClamp] = useRecoilState(clampStore);
     const [dollState, setDoll] = useRecoilState(dollStore);
-    
+
     const clampSize = 80;
 
-    function grabDoll(isGrabDoll: boolean) { 
+    function grabDoll(isGrabDoll: boolean) {
         if (isGrabDoll) {
             setClamp((prev) => ({
                 ...prev,
                 isGrab: true,
                 isHave: true,
+                dollType: dollState.dollTypes[getDollIndex()],
             }));
 
             const newDollTypes = _.map(dollState.dollTypes, (doll, index) => {
@@ -128,7 +129,7 @@ const Clamp = (): React.ReactElement => {
         return () =>
             document.body.removeEventListener("keydown", onKeyDown, false);
     }, [onKeyDown]);
-  
+
     return (
         <motion.div
             className="move"

@@ -11,6 +11,7 @@ const defaultClampPosition: IClampPositionState = {
 const defaultClampState: IClampState = {
     isGrab: false,
     isHave: false,
+    dollType: 0,
 };
 
 export const clampStore = atom({

@@ -1,13 +1,18 @@
 .machine {
-    background: lightgreen;
-    /* display: grid;
-    grid-template-columns: auto auto auto auto; */
-    width: 800px;
-    height: 800px;
+    background: #333333;
+    width: 1050px;
+    height: 1050px;
+    padding: 50px;
+    margin: 25px;
 }
 
 .move {
     position: absolute;
     z-index: 100; 
     background-color: red;
+}
+
+.clamp-doll-item {
+    position: absolute;
+    z-index: 99;  
 }
