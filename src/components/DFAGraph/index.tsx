@@ -15,10 +15,11 @@ const DFAGraph: React.FC = () => {
 
     return (
         <Container>
-            <MapInteractionCSS></MapInteractionCSS>
-            <button onClick={() => setDFASelector("B")}>
-                {currentState.id}
-            </button>
+            <MapInteractionCSS>
+                <button onClick={() => setDFASelector("B")}>
+                    {currentState.id}
+                </button>
+            </MapInteractionCSS>
         </Container>
     );
 };
