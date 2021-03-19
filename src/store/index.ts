@@ -1,1 +1,1 @@
-export { machineStore } from './atom'
+export { clampStore, clampPositionStore, dollStore } from "./atom";

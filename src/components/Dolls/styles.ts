@@ -1,3 +1,4 @@
+// import _ from "lodash";
 import styled from "styled-components";
 
 export const DollContainer = styled.div`
@@ -10,13 +11,15 @@ export const DollContainer = styled.div`
 `;
 
 interface IDollBoxProps {
-    backgroundImg: string; 
+    backgroundImg: string;
+    rotateString: string;
 }
 
 export const DollBox = styled.div<IDollBoxProps>`
     /* background-color: deepskyblue; */
     background-image: url(${(props: IDollBoxProps) => props.backgroundImg});
-    background-size: cover;
+    background-size: cover; 
+    transform: ${(props: IDollBoxProps) => props.rotateString};
     width: 200px;
     height: 200px; 
 `;
