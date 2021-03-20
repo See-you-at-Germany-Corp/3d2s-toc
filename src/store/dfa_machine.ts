@@ -1,90 +1,110 @@
 import { atom } from "recoil";
-
-interface iMachine {
-    states: iState[];
-    transitions: iTransition[];
-}
-
-interface iState {
-    id: number;
-    name: string;
-}
-
-interface iTransition {
-    from: number;
-    to: number;
-    input: string[];
-}
+import { iMachine } from "../types/dfa.types";
 
 const initialMachine: iMachine = {
     states: [
         {
             id: 1,
             name: "IDLE",
+            x: 0,
+            y: 0,
         },
         {
             id: 2,
-            name: "FIRST COIN",
+            name: "FIRST_RETURRCOIN",
+            x: 100,
+            y: 0,
         },
         {
             id: 3,
-            name: "READY TO PLAY",
+            name: "READY_TO_PLAY",
+            x: 200,
+            y: 0,
         },
         {
             id: 4,
-            name: "RETURN COIN",
+            name: "RETURN_COIN",
+            x: 300,
+            y: 0,
         },
         {
             id: 5,
-            name: "READY TO GRAB",
+            name: "READY_TO_GRAB",
+            x: 400,
+            y: 0,
         },
         {
             id: 6,
-            name: "MOVING FORWARD",
+            name: "MOVE_FORWARD",
+            x: 500,
+            y: 0,
         },
         {
             id: 7,
-            name: "MOVING RIGHT",
+            name: "MOVING_RIGHT",
+            x: 600,
+            y: 0,
         },
         {
             id: 8,
-            name: "MOVING LEFT",
+            name: "MOVING_LEFT",
+            x: 700,
+            y: 0,
         },
         {
             id: 9,
-            name: "MOVING BACKWARD",
+            name: "MOVING_BACKWARD",
+            x: 800,
+            y: 0,
         },
         {
             id: 10,
-            name: "MOVING DOWN",
+            name: "MOVING_DOWN",
+            x: 900,
+            y: 0,
         },
         {
             id: 11,
             name: "GRAB",
+            x: 1000,
+            y: 0,
         },
         {
             id: 12,
-            name: "MOVING UP (GRAB)",
+            name: "MOVING_UP(GRAB)",
+            x: 1100,
+            y: 0,
         },
         {
             id: 13,
-            name: "READY T0 BACK (GRAB)",
+            name: "READY_T0_BACK Q(GRAB)",
+            x: 1200,
+            y: 0,
         },
         {
             id: 14,
-            name: "MOVING BACKKWARD (GRAB)",
+            name: "MOVE_BACKKWARD(GRAB)",
+
+            x: 1300,
+            y: 0,
         },
         {
             id: 15,
-            name: "MOVING LEFT (GRAB)",
+            name: "MOVING_LEFT(GRAB)",
+            x: 1400,
+            y: 0,
         },
         {
             id: 16,
             name: "RELEASE",
+            x: 1500,
+            y: 0,
         },
         {
             id: 17,
             name: "RESULT",
+            x: 1600,
+            y: 0,
         },
     ],
     transitions: [
@@ -126,7 +146,7 @@ const initialMachine: iMachine = {
         {
             from: 3,
             to: 5,
-            input: ["B"],
+            input: ["X"],
         },
         {
             from: 4,
@@ -171,12 +191,27 @@ const initialMachine: iMachine = {
         {
             from: 6,
             to: 5,
-            input: ["B", "A", "S", "D"],
+            input: ["B", "Y"],
         },
         {
             from: 6,
             to: 6,
-            input: ["W", "Y"],
+            input: ["W"],
+        },
+        {
+            from: 6,
+            to: 7,
+            input: ["D"],
+        },
+        {
+            from: 6,
+            to: 8,
+            input: ["A"],
+        },
+        {
+            from: 6,
+            to: 9,
+            input: ["S"],
         },
         {
             from: 6,
@@ -186,12 +221,27 @@ const initialMachine: iMachine = {
         {
             from: 7,
             to: 5,
-            input: ["B", "W", "A", "S"],
+            input: ["B", "Y"],
+        },
+        {
+            from: 7,
+            to: 6,
+            input: ["W"],
         },
         {
             from: 7,
             to: 7,
-            input: ["D", "Y"],
+            input: ["D"],
+        },
+        {
+            from: 7,
+            to: 8,
+            input: ["A"],
+        },
+        {
+            from: 7,
+            to: 9,
+            input: ["S"],
         },
         {
             from: 7,
@@ -201,12 +251,27 @@ const initialMachine: iMachine = {
         {
             from: 8,
             to: 5,
-            input: ["B", "W", "S", "D"],
+            input: ["B", "Y"],
+        },
+        {
+            from: 8,
+            to: 6,
+            input: ["W"],
+        },
+        {
+            from: 8,
+            to: 7,
+            input: ["D"],
         },
         {
             from: 8,
             to: 8,
-            input: ["A", "Y"],
+            input: ["A"],
+        },
+        {
+            from: 8,
+            to: 9,
+            input: ["S"],
         },
         {
             from: 8,
@@ -216,12 +281,27 @@ const initialMachine: iMachine = {
         {
             from: 9,
             to: 5,
-            input: ["B", "W", "A", "D"],
+            input: ["B", "Y"],
+        },
+        {
+            from: 9,
+            to: 6,
+            input: ["W"],
+        },
+        {
+            from: 9,
+            to: 7,
+            input: ["D"],
+        },
+        {
+            from: 9,
+            to: 8,
+            input: ["A"],
         },
         {
             from: 9,
             to: 9,
-            input: ["S", "Y"],
+            input: ["S"],
         },
         {
             from: 9,
@@ -261,42 +341,37 @@ const initialMachine: iMachine = {
         {
             from: 13,
             to: 13,
-            input: ["X", "W", "D", "Y"],
-        },
-        {
-            from: 13,
-            to: 14,
-            input: ["S"],
-        },
-        {
-            from: 13,
-            to: 15,
-            input: ["A"],
-        },
-        {
-            from: 13,
-            to: 16,
-            input: ["B"],
-        },
-        {
-            from: 14,
-            to: 14,
-            input: ["S"],
-        },
-        {
-            from: 14,
-            to: 13,
             input: ["B", "W", "A", "D", "X", "Y"],
         },
         {
-            from: 15,
+            from: 13,
+            to: 14,
+            input: ["S"],
+        },
+        {
+            from: 14,
+            to: 14,
+            input: ["B", "W", "S", "D", "X", "Y"],
+        },
+        {
+            from: 14,
             to: 15,
             input: ["A"],
         },
         {
             from: 15,
-            to: 13,
-            input: ["B", "W", "S", "D", "X", "Y"],
+            to: 14,
+            input: ["S"],
+        },
+        {
+            from: 15,
+            to: 15,
+            input: ["W", "A", "D", "X", "Y"],
+        },
+        {
+            from: 15,
+            to: 16,
+            input: ["B"],
         },
         {
             from: 16,
