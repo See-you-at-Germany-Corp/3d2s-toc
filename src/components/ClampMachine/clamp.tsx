@@ -65,37 +65,42 @@ const Clamp = (): React.ReactElement => {
         }
     }
 
-    function getClampArrayPos(
-        clampPos: { x: number; y: number },
-        clampSize: number = 80,
-        dollSize: number = 200
-    ): { row: number; col: number } {
-        const col: number = Math.floor(
-            (clampPos.x + clampSize - clampSize / 2) / dollSize
-        );
-        const row: number = Math.floor(
-            (clampPos.y + clampSize - clampSize / 2) / dollSize
-        );
-
-        return {
-            row,
-            col,
-        };
-    }
-
     function getDollIndex(): number {
+        function getClampArrayPos(
+            clampPos: { x: number; y: number },
+            clampSize: number = 80,
+            dollSize: number = 200
+        ): { row: number; col: number } {
+            const machinePadding: number = 100;
+
+            const col: number = Math.floor(
+                (clampPos.x - machinePadding + clampSize - clampSize / 2) /
+                    dollSize
+            );
+
+            const row: number = Math.floor(
+                (clampPos.y - machinePadding + clampSize - clampSize / 2) /
+                    dollSize
+            );
+
+            return {
+                row,
+                col,
+            };
+        }
+
         const { row, col } = getClampArrayPos(clampPos);
         const dollIndex: number = 5 * row + col;
         // console.log("dollIndex :>> ", dollIndex);
         return dollIndex;
     }
 
-    function isHaveDoll(): boolean {
-        if (dollState.dollTypes[getDollIndex()] === 0) return false;
-        else return true;
-    }
-
     function isClampGetDoll(): boolean {
+        function isHaveDoll(): boolean {
+            if (dollState.dollTypes[getDollIndex()] === 0) return false;
+            else return true;
+        }
+
         if (isHaveDoll() && !clampState.isGrab) return true;
         else return false;
     }
@@ -106,20 +111,20 @@ const Clamp = (): React.ReactElement => {
 
         switch (input) {
             case "W": {
-                if (position.y + clampSize < 150) isCanmove = false;
+                if (position.y + clampSize < 200) isCanmove = false;
                 break;
             }
             case "A": {
-                if (position.x + clampSize < 150) isCanmove = false;
+                if (position.x + clampSize < 200) isCanmove = false;
                 break;
             }
             case "S": {
-                if (position.y - clampSize > machineSize - clampSize - 100)
+                if (position.y - clampSize > machineSize - clampSize)
                     isCanmove = false;
                 break;
             }
             case "D": {
-                if (position.x - clampSize > machineSize - clampSize - 100)
+                if (position.x - clampSize > machineSize - clampSize)
                     isCanmove = false;
                 break;
             }
@@ -144,9 +149,14 @@ const Clamp = (): React.ReactElement => {
     }
 
     function inputToDFA(input: machineInput) {
+        setDFA(input);
+        setIsMStateChange(true);
+    }
+
+    function inputToDFAAndTrack(input: machineInput) {
         function getNewBackwardInput(): IBackwardInput {
-            let newBackwardInputX = [...backwardInput.x];
-            let newBackwardInputY = [...backwardInput.y];
+            let newBackwardInputX = _.clone(backwardInput.x);
+            let newBackwardInputY = _.clone(backwardInput.y);
             const lastItemX = _.last(newBackwardInputX);
             const lastItemY = _.last(newBackwardInputY);
 
@@ -191,28 +201,48 @@ const Clamp = (): React.ReactElement => {
             };
         }
 
-        setDFA(input);
         if (isClampCanMove(input)) setBackwardInput(getNewBackwardInput());
-        setIsMStateChange(true);
+        inputToDFA(input);
+    }
+
+    function moveClampToStart() {
+        const lenArrayX = backwardInput.x.length;
+        const lenArrayY = backwardInput.y.length;
+
+        if (lenArrayX > 0) {
+            setTimeout(inputToDFA, 40, "A");
+            setBackwardInput((prev) => ({
+                ...prev,
+                x: _.take(prev.x, lenArrayX - 1),
+            }));
+        } else if (lenArrayY > 0) {
+            setTimeout(inputToDFA, 40, "S");
+            setBackwardInput((prev) => ({
+                ...prev,
+                y: _.take(prev.y, lenArrayY - 1),
+            }));
+        } else {
+            inputToDFA("B");
+        }
     }
 
     const onKeyDown = React.useCallback(
         (key: KeyboardEvent) => {
             switch (key.code) {
                 case "KeyW":
-                    inputToDFA("W");
+                    inputToDFAAndTrack("W");
                     break;
                 case "KeyA":
-                    inputToDFA("A");
+                    inputToDFAAndTrack("A");
                     break;
                 case "KeyS":
-                    inputToDFA("S");
+                    inputToDFAAndTrack("S");
                     break;
                 case "KeyD":
-                    inputToDFA("D");
+                    inputToDFAAndTrack("D");
                     break;
                 case "Space":
-                    inputToDFA("X");
+                    inputToDFAAndTrack("X");
                     break;
                 case "KeyX":
                     setClamp((prev) => ({
@@ -271,26 +301,55 @@ const Clamp = (): React.ReactElement => {
                     if (!clampState.isGrab) {
                         grabDoll(isClampGetDoll());
                     }
+                    setTimeout(() => {
+                        inputToDFA("B");
+                    }, 500);
+                    break;
+                }
+                case machineStateData.MOVE_UP_GRAB: {
+                    setTimeout(() => {
+                        inputToDFA("B");
+                    }, 500);
+                    break;
+                }
+                case machineStateData.READY_T0_BACK_GRAB: {
+                    moveClampToStart();
+                    break;
+                }
+                case machineStateData.MOVE_LEFT_GRAB: {
+                    moveClampToStart();
+                    setClampPosition(-clampStep, 0);
+                    break;
+                }
+                case machineStateData.MOVE_BACKKWARD_GRAB: {
+                    moveClampToStart();
+                    setClampPosition(0, clampStep);
                     break;
                 }
                 case machineStateData.RELEASE: {
-                    setClamp((prev) => ({
-                        ...prev,
-                        isGrab: false,
-                        isHave: false,
-                    }));
+                    setTimeout(() => {
+                        setClamp((prev) => ({
+                            ...prev,
+                            isGrab: false,
+                            isHave: false,
+                        }));
+                    }, 400);
+                    setTimeout(inputToDFA, 1400, "B");
                     break;
                 }
+                case machineStateData.RESULT: {
+                    /// tricker result popup here.
+                    alert("เต้น่ารัก");
+                    break;
+                }
+
                 default:
                     break;
             }
 
         // eslint-disable-next-line
-    }, [isMStateChange]);
-
-    // console.log("DFACurrent.name :>> ", DFACurrent.name);
-    // console.log("backwardInput :>> ", backwardInput);
-
+    }, [isMStateChange, backwardInput, DFACurrent.id]);
+  
     return (
         <motion.div
             className="move"
