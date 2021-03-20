@@ -1,16 +1,42 @@
 import React from "react";
 import _ from "lodash";
-import { useRecoilState } from "recoil";
+import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
 import { motion } from "framer-motion";
 
-import { clampStore, clampPositionStore, dollStore } from "../../store";
+import {
+    clampStore,
+    clampPositionStore,
+    dollStore,
+    DFACurrentState,
+    DFASelector,
+} from "../../store";
+
+import { machineStateData } from "../../types/machineStateData";
+
+import { machineInput } from "../../types/machine.type";
+
+interface IBackwardInput {
+    x: string[];
+    y: string[];
+}
 
 const Clamp = (): React.ReactElement => {
     const [clampPos, setClampPos] = useRecoilState(clampPositionStore);
     const [clampState, setClamp] = useRecoilState(clampStore);
     const [dollState, setDoll] = useRecoilState(dollStore);
 
-    const clampSize = 80;
+    const DFACurrent = useRecoilValue(DFACurrentState);
+    const setDFA = useSetRecoilState(DFASelector);
+
+    const [isMStateChange, setIsMStateChange] = React.useState<boolean>(false);
+    const [backwardInput, setBackwardInput] = React.useState<IBackwardInput>({
+        x: [],
+        y: [],
+    });
+
+    const machineSize = 1000;
+    const clampSize: number = 80;
+    const clampStep: number = 20;
 
     function grabDoll(isGrabDoll: boolean) {
         if (isGrabDoll) {
@@ -74,34 +100,119 @@ const Clamp = (): React.ReactElement => {
         else return false;
     }
 
+    function isClampCanMove(input: machineInput): boolean {
+        const position = clampPos;
+        let isCanmove = true;
+
+        switch (input) {
+            case "W": {
+                if (position.y + clampSize < 150) isCanmove = false;
+                break;
+            }
+            case "A": {
+                if (position.x + clampSize < 150) isCanmove = false;
+                break;
+            }
+            case "S": {
+                if (position.y - clampSize > machineSize - clampSize - 100)
+                    isCanmove = false;
+                break;
+            }
+            case "D": {
+                if (position.x - clampSize > machineSize - clampSize - 100)
+                    isCanmove = false;
+                break;
+            }
+        }
+        return isCanmove;
+    }
+
+    function setClampPosition(moveX: number = 0, moveY: number = 0) {
+        let input: machineInput = "W";
+
+        if (moveY < 0) input = "W";
+        if (moveX < 0) input = "A";
+        if (moveY > 0) input = "S";
+        if (moveX > 0) input = "D";
+
+        if (isClampCanMove(input)) {
+            setClampPos((prev) => ({
+                x: prev.x + moveX,
+                y: prev.y + moveY,
+            }));
+        }
+    }
+
+    function inputToDFA(input: machineInput) {
+        function getNewBackwardInput(): IBackwardInput {
+            let newBackwardInputX = [...backwardInput.x];
+            let newBackwardInputY = [...backwardInput.y];
+            const lastItemX = _.last(newBackwardInputX);
+            const lastItemY = _.last(newBackwardInputY);
+
+            if (newBackwardInputX.length === 0 && ["A", "D"].includes(input)) {
+                newBackwardInputX.push(input);
+            }
+            if (newBackwardInputY.length === 0 && ["W", "S"].includes(input))
+                newBackwardInputY.push(input);
+            if (
+                newBackwardInputX.length !== 0 ||
+                newBackwardInputY.length !== 0
+            )
+                switch (input) {
+                    case "W": {
+                        if (lastItemY === "S")
+                            newBackwardInputY = _.dropRight(newBackwardInputY);
+                        if (lastItemY === "W") newBackwardInputY.push("W");
+                        break;
+                    }
+                    case "A": {
+                        if (lastItemX === "D")
+                            newBackwardInputX = _.dropRight(newBackwardInputX);
+                        if (lastItemX === "A") newBackwardInputX.push("A");
+                        break;
+                    }
+                    case "S": {
+                        if (lastItemY === "W")
+                            newBackwardInputY = _.dropRight(newBackwardInputY);
+                        if (lastItemY === "S") newBackwardInputY.push("S");
+                        break;
+                    }
+                    case "D": {
+                        if (lastItemX === "A")
+                            newBackwardInputX = _.dropRight(newBackwardInputX);
+                        if (lastItemX === "D") newBackwardInputX.push("D");
+                        break;
+                    }
+                }
+            return {
+                x: newBackwardInputX,
+                y: newBackwardInputY,
+            };
+        }
+
+        setDFA(input);
+        if (isClampCanMove(input)) setBackwardInput(getNewBackwardInput());
+        setIsMStateChange(true);
+    }
+
     const onKeyDown = React.useCallback(
         (key: KeyboardEvent) => {
-            function setClampPosition(moveX: number = 0, moveY: number = 0) {
-                setClampPos((prev) => ({
-                    x: prev.x + moveX,
-                    y: prev.y + moveY,
-                }));
-            }
-
-            const clampStep: number = 20;
-
             switch (key.code) {
-                case "KeyD":
-                    setClampPosition(clampStep, 0);
+                case "KeyW":
+                    inputToDFA("W");
                     break;
                 case "KeyA":
-                    setClampPosition(-clampStep, 0);
-                    break;
-                case "KeyW":
-                    setClampPosition(0, -clampStep);
+                    inputToDFA("A");
                     break;
                 case "KeyS":
-                    setClampPosition(0, clampStep);
+                    inputToDFA("S");
+                    break;
+                case "KeyD":
+                    inputToDFA("D");
                     break;
                 case "Space":
-                    if (!clampState.isGrab) {
-                        grabDoll(isClampGetDoll());
-                    }
+                    inputToDFA("X");
                     break;
                 case "KeyX":
                     setClamp((prev) => ({
@@ -129,6 +240,56 @@ const Clamp = (): React.ReactElement => {
         return () =>
             document.body.removeEventListener("keydown", onKeyDown, false);
     }, [onKeyDown]);
+
+    React.useEffect(() => {
+        setIsMStateChange(false);
+        if (isMStateChange)
+            switch (DFACurrent.id) {
+                case machineStateData.MOVE_FORWARD: {
+                    setClampPosition(0, -clampStep);
+                    break;
+                }
+                case machineStateData.MOVE_LEFT: {
+                    setClampPosition(-clampStep, 0);
+                    break;
+                }
+                case machineStateData.MOVE_BACKWARD: {
+                    setClampPosition(0, clampStep);
+                    break;
+                }
+                case machineStateData.MOVE_RIGHT: {
+                    setClampPosition(clampStep, 0);
+                    break;
+                }
+                case machineStateData.MOVE_DOWN: {
+                    setTimeout(() => {
+                        inputToDFA("B");
+                    }, 500);
+                    break;
+                }
+                case machineStateData.GRAB: {
+                    if (!clampState.isGrab) {
+                        grabDoll(isClampGetDoll());
+                    }
+                    break;
+                }
+                case machineStateData.RELEASE: {
+                    setClamp((prev) => ({
+                        ...prev,
+                        isGrab: false,
+                        isHave: false,
+                    }));
+                    break;
+                }
+                default:
+                    break;
+            }
+
+        // eslint-disable-next-line
+    }, [isMStateChange]);
+
+    // console.log("DFACurrent.name :>> ", DFACurrent.name);
+    // console.log("backwardInput :>> ", backwardInput);
 
     return (
         <motion.div
