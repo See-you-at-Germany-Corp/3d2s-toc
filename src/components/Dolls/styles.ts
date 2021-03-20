@@ -6,10 +6,10 @@ export const DollContainer = styled.div`
     background: #fbfbfb;
     display: grid;
     grid-template-columns: auto auto auto auto auto;
-    grid-template-rows: 200px 200px 200px 200px 200px;
+    grid-template-rows: 200px 200px 200px 200px;
     width: 1000px;
     height: 1000px;
-    padding: 25px;
+    padding: 100px;
 `;
 
 const randomDeg = `${(_.random(0, 36) * 10) / _.random(2, 9)}deg`;
