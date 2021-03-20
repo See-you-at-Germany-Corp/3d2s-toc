@@ -1,8 +1,10 @@
 import { motion } from 'framer-motion';
-import React, { MutableRefObject, useEffect, useState } from 'react';
+import React, { MouseEventHandler, MutableRefObject, useEffect, useState } from 'react';
 import Popup from 'reactjs-popup';
 import { IDollData } from '../Dolls/doll_data';
-import {MotionH1, MotionH2, PopupBody} from './style';
+import {Button, Container, MotionH1, MotionH2, MotionIMG, PartyCracker, PopupBody} from './style';
+import party from './party.png';
+
 
 interface PopupProps {
     data: IDollData
@@ -11,21 +13,37 @@ interface PopupProps {
 }
 
 const GamePopup = (props: PopupProps):React.ReactElement => {
+    const [open, setOpen] = React.useState(false)
+    useEffect(()=>{
+        setOpen(props.open)
+    })
+
     return (
         <div>
-            <Popup open={props.open} onClose={props.onClose}  modal> 
+            <Popup open={open} onClose={props.onClose}  modal> 
+            <Container>
+                <PartyCracker src={party}  
+                    initial={{scaleX:-1}}
+                    animate={{rotate:10}}
+                    transition={{
+                        repeat: Infinity,
+                        repeatType: "reverse",
+                        duration: 0.3
+                    }}
+                />
                 <PopupBody 
                     initial="hidden"
                     animate="show"
                     variants={container}
                 >
-                        <MotionH1
-                            variants={H1}
-                        >Congratulations!</MotionH1>
-                        <MotionH2
-                            variants={H1}
-                        >{props.data.name}</MotionH2>
-                    <motion.img src={props.data.img} 
+                    <MotionH1 variants={H1}>
+                        Congratulations!
+                    </MotionH1>
+                    <MotionH2
+                        variants={H1}
+                    >{props.data.name}</MotionH2>
+                    
+                    <MotionIMG src={props.data.img} 
                         variants={doll}
                         animate={{rotate:10}}
                         transition={{
@@ -34,9 +52,21 @@ const GamePopup = (props: PopupProps):React.ReactElement => {
                             duration: 0.3
                         }}
                     />
-                    
+
+                    <Button onClick={()=>setOpen(false)}
+                        whileHover={{scale: 1.2}}
+                        whileTap={{scale:0.8}}
+                    >Continue</Button>
                 </PopupBody>
-                    
+                <PartyCracker src={party} 
+                    animate={{rotate:10}}
+                    transition={{
+                        repeat: Infinity,
+                        repeatType: "reverse",
+                        duration: 0.3
+                    }}
+                />
+                </Container>
             </Popup>
         </div>
     );
@@ -64,8 +94,9 @@ const H1 = {
         scale:[0,1.7,1.4],
         transition :{ 
             duration: 1, 
-            times: [0, 0.2, 0.5] 
-        }
+            times: [0, 0.2, 0.5],
+            repeat: Infinity,
+        },
     }
 }
 
