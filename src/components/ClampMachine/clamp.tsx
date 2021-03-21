@@ -38,6 +38,15 @@ const Clamp = (): React.ReactElement => {
     const clampSize: number = 80;
     const clampStep: number = 20;
 
+    const DFADisableKeyLists: number[] = [
+        machineStateData.MOVE_DOWN,
+        machineStateData.GRAB,
+        machineStateData.MOVE_UP_GRAB,
+        machineStateData.MOVE_BACKKWARD_GRAB,
+        machineStateData.MOVE_LEFT_GRAB, 
+        machineStateData.RESULT, 
+    ];
+
     function grabDoll(isGrabDoll: boolean) {
         if (isGrabDoll) {
             setClamp((prev) => ({
@@ -201,8 +210,10 @@ const Clamp = (): React.ReactElement => {
             };
         }
 
-        if (isClampCanMove(input)) setBackwardInput(getNewBackwardInput());
-        inputToDFA(input);
+        if (!DFADisableKeyLists.includes(DFACurrent.id)) { 
+            if (isClampCanMove(input)) setBackwardInput(getNewBackwardInput());
+            inputToDFA(input);
+        }
     }
 
     function moveClampToStart() {
@@ -242,21 +253,8 @@ const Clamp = (): React.ReactElement => {
                     inputToDFAAndTrack("D");
                     break;
                 case "Space":
-                    inputToDFAAndTrack("X");
-                    break;
-                case "KeyX":
-                    setClamp((prev) => ({
-                        ...prev,
-                        isGrab: false,
-                    }));
-                    break;
-                case "KeyZ":
-                    setClamp((prev) => ({
-                        ...prev,
-                        isGrab: false,
-                        isHave: false,
-                    }));
-                    break;
+                    inputToDFA("X");
+                    break; 
                 default:
                     break;
             }
@@ -338,7 +336,7 @@ const Clamp = (): React.ReactElement => {
                     break;
                 }
                 case machineStateData.RESULT: {
-                    /// tricker result popup here.
+                    /// tricker result popup here. 
                     alert("เต้น่ารัก");
                     break;
                 }
