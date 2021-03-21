@@ -209,17 +209,17 @@ const Clamp = (): React.ReactElement => {
         const lenArrayX = backwardInput.x.length;
         const lenArrayY = backwardInput.y.length;
 
-        if (lenArrayX > 0) {
-            setTimeout(inputToDFA, 40, "A");
-            setBackwardInput((prev) => ({
-                ...prev,
-                x: _.take(prev.x, lenArrayX - 1),
-            }));
-        } else if (lenArrayY > 0) {
+        if (lenArrayY > 0) {
             setTimeout(inputToDFA, 40, "S");
             setBackwardInput((prev) => ({
                 ...prev,
                 y: _.take(prev.y, lenArrayY - 1),
+            }));
+        } else if (lenArrayX > 0) {
+            setTimeout(inputToDFA, 40, "A");
+            setBackwardInput((prev) => ({
+                ...prev,
+                x: _.take(prev.x, lenArrayX - 1),
             }));
         } else {
             inputToDFA("B");

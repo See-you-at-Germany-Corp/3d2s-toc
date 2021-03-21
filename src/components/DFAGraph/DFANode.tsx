@@ -13,7 +13,7 @@ interface ContainerProps {
 
 const DFANode: React.FC<Props> = (props) => {
     useEffect(() => {
-        console.log(props.state);
+        // console.log(props.state);
     }, [props.state]);
 
     return <Container x={props.state.x} y={props.state.y}></Container>;
