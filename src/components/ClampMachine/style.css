@@ -9,7 +9,7 @@
 .move {
     position: absolute;
     z-index: 100; 
-    background-color: red;
+    /* background-color: red; */
 }
 
 .clamp-doll-item {
