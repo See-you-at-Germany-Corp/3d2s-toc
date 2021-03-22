@@ -42,8 +42,10 @@ const Clamp = (): React.ReactElement => {
         machineStateData.MOVE_DOWN,
         machineStateData.GRAB,
         machineStateData.MOVE_UP_GRAB,
+        machineStateData.READY_T0_BACK_GRAB,
         machineStateData.MOVE_BACKKWARD_GRAB,
         machineStateData.MOVE_LEFT_GRAB, 
+        machineStateData.RELEASE, 
         machineStateData.RESULT, 
     ];
 
@@ -209,7 +211,7 @@ const Clamp = (): React.ReactElement => {
                 y: newBackwardInputY,
             };
         }
-
+ 
         if (!DFADisableKeyLists.includes(DFACurrent.id)) { 
             if (isClampCanMove(input)) setBackwardInput(getNewBackwardInput());
             inputToDFA(input);
