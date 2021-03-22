@@ -77,7 +77,7 @@ const initialMachine: iMachine = {
         },
         {
             id: 13,
-            name: "READY_T0_BACK Q(GRAB)",
+            name: "READY_T0_BACK(GRAB)",
             x: 1200,
             y: 0,
         },
@@ -341,7 +341,7 @@ const initialMachine: iMachine = {
         {
             from: 13,
             to: 13,
-            input: ["B", "W", "A", "D", "X", "Y"],
+            input: ["W", "A", "D", "X", "Y"],
         },
         {
             from: 13,
@@ -349,14 +349,24 @@ const initialMachine: iMachine = {
             input: ["S"],
         },
         {
+            from: 13,
+            to: 16,
+            input: ["B"],
+        },
+        {
             from: 14,
             to: 14,
-            input: ["B", "W", "S", "D", "X", "Y"],
+            input: ["W", "S", "D", "X", "Y"],
         },
         {
             from: 14,
             to: 15,
             input: ["A"],
+        },
+        {
+            from: 14,
+            to: 16,
+            input: ["B"],
         },
         {
             from: 15,
