@@ -341,12 +341,17 @@ const initialMachine: iMachine = {
         {
             from: 13,
             to: 13,
-            input: ["W", "A", "D", "X", "Y"],
+            input: ["W", "D", "X", "Y"],
         },
         {
             from: 13,
             to: 14,
             input: ["S"],
+        },
+        {
+            from: 13,
+            to: 15,
+            input: ["A"],
         },
         {
             from: 13,
