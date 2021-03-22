@@ -7,8 +7,10 @@ import DFAGraph from "./components/DFAGraph";
 const App = (): React.ReactElement => {
     return (
         <RecoilRoot>
-            <ClampMachine />
-            <DFAGraph />
+            <div className="dfa-clamp-machine" style={{ display: "flex" }}>
+                <ClampMachine />
+                <DFAGraph />
+            </div>
         </RecoilRoot>
     );
 };

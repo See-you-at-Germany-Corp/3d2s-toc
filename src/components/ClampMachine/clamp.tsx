@@ -40,11 +40,22 @@ const Clamp = (): React.ReactElement => {
     const machineSize = 700;
     const clampSize: number = 120;
     const clampStep: number = 20;
-  
+
+    const DFADisableKeyLists = [
+        machineStateData.MOVE_DOWN,
+        machineStateData.GRAB,
+        machineStateData.MOVE_UP_GRAB,
+        machineStateData.READY_T0_BACK_GRAB,
+        machineStateData.MOVE_BACKKWARD_GRAB,
+        machineStateData.MOVE_LEFT_GRAB,
+        machineStateData.RELEASE,
+        machineStateData.RESULT,
+    ];
+
     function backwardCalculate(): IBackwardInput {
         const { row, col } = getClampArrayPos(clampPos, clampSize);
 
-        const backwardXAmount = (col) * 8;
+        const backwardXAmount = col * 8;
         const backwardYAmount = (4 - row) * 8;
 
         let newBackwardX: string[] = [];
@@ -63,7 +74,6 @@ const Clamp = (): React.ReactElement => {
     }
 
     function grabDoll(isGrabDoll: boolean) {
-        console.log("backwardCalculate() :>> ", backwardCalculate());
         setBackwardInput(backwardCalculate());
         if (isGrabDoll) {
             setClamp((prev) => ({
@@ -201,19 +211,24 @@ const Clamp = (): React.ReactElement => {
         (key: KeyboardEvent) => {
             switch (key.code) {
                 case "KeyW":
-                    inputToDFA("W");
+                    if (!DFADisableKeyLists.includes(DFACurrent.id))
+                        inputToDFA("W");
                     break;
                 case "KeyA":
-                    inputToDFA("A");
+                    if (!DFADisableKeyLists.includes(DFACurrent.id))
+                        inputToDFA("A");
                     break;
                 case "KeyS":
-                    inputToDFA("S");
+                    if (!DFADisableKeyLists.includes(DFACurrent.id))
+                        inputToDFA("S");
                     break;
                 case "KeyD":
-                    inputToDFA("D");
+                    if (!DFADisableKeyLists.includes(DFACurrent.id))
+                        inputToDFA("D");
                     break;
                 case "Space":
-                    inputToDFA("X");
+                    if (!DFADisableKeyLists.includes(DFACurrent.id))
+                        inputToDFA("X");
                     break;
                 default:
                     break;
@@ -303,6 +318,8 @@ const Clamp = (): React.ReactElement => {
 
         // eslint-disable-next-line
     }, [isMStateChange, backwardInput, DFACurrent.id]);
+
+    console.log('DFACurrent.name :>> ', DFACurrent.name);
 
     return (
         <motion.div
