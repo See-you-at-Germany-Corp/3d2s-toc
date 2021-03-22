@@ -5,10 +5,13 @@ import styled from "styled-components";
 import { MapInteractionCSS } from "react-map-interaction";
 
 import { useRecoilValue, useSetRecoilState } from "recoil";
-import { DFACurrentState, DFASelector } from "../../store/index";
+import { DFACurrentState, DFASelector, DFAMachine } from "../../store/index";
+
+import { DFANode } from "./DFANode";
 
 const DFAGraph: React.FC = () => {
     const currentState = useRecoilValue(DFACurrentState);
+    const machineState = useRecoilValue(DFAMachine);
     const setDFASelector = useSetRecoilState(DFASelector);
 
     useEffect(() => {}, []);
@@ -16,6 +19,9 @@ const DFAGraph: React.FC = () => {
     return (
         <Container>
             <MapInteractionCSS>
+                {machineState.states.map((state, i) => (
+                    <DFANode state={state} key={`node-${i}`} />
+                ))}
                 <button onClick={() => setDFASelector("B")}>
                     {currentState.id}
                 </button>
