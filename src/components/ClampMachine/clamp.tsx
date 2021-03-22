@@ -2,8 +2,8 @@ import React from "react";
 import _ from "lodash";
 import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
 import { motion } from "framer-motion";
-import Grabber from './Graber.png';
-import GrabberGrab from './GraberGrab.png';
+import Grabber from "./Graber.png";
+import GrabberGrab from "./GraberGrab.png";
 
 import {
     clampStore,
@@ -38,21 +38,33 @@ const Clamp = (): React.ReactElement => {
     });
 
     const machineSize = 700;
-    const clampSize: number = 80;
+    const clampSize: number = 120;
     const clampStep: number = 20;
+  
+    function backwardCalculate(): IBackwardInput {
+        const { row, col } = getClampArrayPos(clampPos, clampSize);
 
-    const DFADisableKeyLists: number[] = [
-        machineStateData.MOVE_DOWN,
-        machineStateData.GRAB,
-        machineStateData.MOVE_UP_GRAB,
-        machineStateData.READY_T0_BACK_GRAB,
-        machineStateData.MOVE_BACKKWARD_GRAB,
-        machineStateData.MOVE_LEFT_GRAB, 
-        machineStateData.RELEASE, 
-        machineStateData.RESULT, 
-    ];
+        const backwardXAmount = (col) * 8;
+        const backwardYAmount = (4 - row) * 8;
+
+        let newBackwardX: string[] = [];
+        let newBackwardY: string[] = [];
+
+        for (let i: number = 0; i < backwardXAmount; i++)
+            newBackwardX.push("A");
+
+        for (let j: number = 0; j < backwardYAmount; j++)
+            newBackwardY.push("S");
+
+        return {
+            x: newBackwardX,
+            y: newBackwardY,
+        };
+    }
 
     function grabDoll(isGrabDoll: boolean) {
+        console.log("backwardCalculate() :>> ", backwardCalculate());
+        setBackwardInput(backwardCalculate());
         if (isGrabDoll) {
             setClamp((prev) => ({
                 ...prev,
@@ -78,32 +90,30 @@ const Clamp = (): React.ReactElement => {
             }));
         }
     }
-    
+
+    function getClampArrayPos(
+        clampPos: { x: number; y: number },
+        clampSize: number = 120,
+        dollSize: number = 120
+    ): { row: number; col: number } {
+        const machinePadding: number = 50;
+
+        const col: number = Math.floor(
+            (clampPos.x - machinePadding + clampSize - clampSize / 2) / dollSize
+        );
+
+        const row: number = Math.floor(
+            (clampPos.y - machinePadding + clampSize - clampSize / 2) / dollSize
+        );
+
+        return {
+            row,
+            col,
+        };
+    }
+
     function getDollIndex(): number {
-        function getClampArrayPos(
-            clampPos: { x: number; y: number },
-            clampSize: number = 80,
-            dollSize: number = 120
-        ): { row: number; col: number } {
-            const machinePadding: number = 50;
-
-            const col: number = Math.floor(
-                (clampPos.x - machinePadding + clampSize - clampSize / 2) /
-                    dollSize
-            );
-
-            const row: number = Math.floor(
-                (clampPos.y - machinePadding + clampSize - clampSize / 2) /
-                    dollSize
-            );
-
-            return {
-                row,
-                col,
-            };
-        }
-
-        const { row, col } = getClampArrayPos(clampPos);
+        const { row, col } = getClampArrayPos(clampPos, clampSize);
         const dollIndex: number = 5 * row + col;
         // console.log("dollIndex :>> ", dollIndex);
         return dollIndex;
@@ -119,34 +129,33 @@ const Clamp = (): React.ReactElement => {
         else return false;
     }
 
-    function isClampCanMove(input: machineInput): boolean {
-        const position = clampPos;
-        let isCanmove = true;
-
-        switch (input) {
-            case "W": {
-                if (position.y + clampSize < 140) isCanmove = false;
-                break;
-            }
-            case "A": {
-                if (position.x + clampSize < 140) isCanmove = false;
-                break;
-            }
-            case "S": {
-                if (position.y - clampSize > machineSize - 220)
-                    isCanmove = false;
-                break;
-            }
-            case "D": {
-                if (position.x - clampSize > machineSize - 220)
-                    isCanmove = false;
-                break;
-            }
-        }
-        return isCanmove;
-    }
-
     function setClampPosition(moveX: number = 0, moveY: number = 0) {
+        function isClampCanMove(input: machineInput): boolean {
+            const position = clampPos;
+            let isCanmove = true;
+
+            switch (input) {
+                case "W": {
+                    if (position.y + clampSize < 140) isCanmove = false;
+                    break;
+                }
+                case "A": {
+                    if (position.x + clampSize < 140) isCanmove = false;
+                    break;
+                }
+                case "S": {
+                    if (position.y - clampSize > machineSize - 260)
+                        isCanmove = false;
+                    break;
+                }
+                case "D": {
+                    if (position.x - clampSize > machineSize - 260)
+                        isCanmove = false;
+                    break;
+                }
+            }
+            return isCanmove;
+        }
         let input: machineInput = "W";
 
         if (moveY < 0) input = "W";
@@ -165,60 +174,6 @@ const Clamp = (): React.ReactElement => {
     function inputToDFA(input: machineInput) {
         setDFA(input);
         setIsMStateChange(true);
-    }
-
-    function inputToDFAAndTrack(input: machineInput) {
-        function getNewBackwardInput(): IBackwardInput {
-            let newBackwardInputX = _.clone(backwardInput.x);
-            let newBackwardInputY = _.clone(backwardInput.y);
-            const lastItemX = _.last(newBackwardInputX);
-            const lastItemY = _.last(newBackwardInputY);
-
-            if (newBackwardInputX.length === 0 && ["A", "D"].includes(input)) {
-                newBackwardInputX.push(input);
-            }
-            if (newBackwardInputY.length === 0 && ["W", "S"].includes(input))
-                newBackwardInputY.push(input);
-            if (
-                newBackwardInputX.length !== 0 ||
-                newBackwardInputY.length !== 0
-            )
-                switch (input) {
-                    case "W": {
-                        if (lastItemY === "S")
-                            newBackwardInputY = _.dropRight(newBackwardInputY);
-                        if (lastItemY === "W") newBackwardInputY.push("W");
-                        break;
-                    }
-                    case "A": {
-                        if (lastItemX === "D")
-                            newBackwardInputX = _.dropRight(newBackwardInputX);
-                        if (lastItemX === "A") newBackwardInputX.push("A");
-                        break;
-                    }
-                    case "S": {
-                        if (lastItemY === "W")
-                            newBackwardInputY = _.dropRight(newBackwardInputY);
-                        if (lastItemY === "S") newBackwardInputY.push("S");
-                        break;
-                    }
-                    case "D": {
-                        if (lastItemX === "A")
-                            newBackwardInputX = _.dropRight(newBackwardInputX);
-                        if (lastItemX === "D") newBackwardInputX.push("D");
-                        break;
-                    }
-                }
-            return {
-                x: newBackwardInputX,
-                y: newBackwardInputY,
-            };
-        }
- 
-        if (!DFADisableKeyLists.includes(DFACurrent.id)) { 
-            if (isClampCanMove(input)) setBackwardInput(getNewBackwardInput());
-            inputToDFA(input);
-        }
     }
 
     function moveClampToStart() {
@@ -246,20 +201,20 @@ const Clamp = (): React.ReactElement => {
         (key: KeyboardEvent) => {
             switch (key.code) {
                 case "KeyW":
-                    inputToDFAAndTrack("W");
+                    inputToDFA("W");
                     break;
                 case "KeyA":
-                    inputToDFAAndTrack("A");
+                    inputToDFA("A");
                     break;
                 case "KeyS":
-                    inputToDFAAndTrack("S");
+                    inputToDFA("S");
                     break;
                 case "KeyD":
-                    inputToDFAAndTrack("D");
+                    inputToDFA("D");
                     break;
                 case "Space":
                     inputToDFA("X");
-                    break; 
+                    break;
                 default:
                     break;
             }
@@ -295,26 +250,20 @@ const Clamp = (): React.ReactElement => {
                     break;
                 }
                 case machineStateData.MOVE_DOWN: {
-                    setMovingDown(true)
-                    setTimeout(() => {
-                        inputToDFA("B");
-                    }, 500);
+                    setMovingDown(true);
+                    setTimeout(inputToDFA, 500, "B");
                     break;
                 }
                 case machineStateData.GRAB: {
-                    setMovingDown(false)
+                    setMovingDown(false);
                     if (!clampState.isGrab) {
                         grabDoll(isClampGetDoll());
                     }
-                    setTimeout(() => {
-                        inputToDFA("B");
-                    }, 500);
+                    setTimeout(inputToDFA, 500, "B");
                     break;
                 }
                 case machineStateData.MOVE_UP_GRAB: {
-                    setTimeout(() => {
-                        inputToDFA("B");
-                    }, 500);
+                    setTimeout(inputToDFA, 500, "B");
                     break;
                 }
                 case machineStateData.READY_T0_BACK_GRAB: {
@@ -343,7 +292,7 @@ const Clamp = (): React.ReactElement => {
                     break;
                 }
                 case machineStateData.RESULT: {
-                    /// tricker result popup here. 
+                    /// tricker result popup here.
                     alert("เต้น่ารัก");
                     break;
                 }
@@ -354,21 +303,29 @@ const Clamp = (): React.ReactElement => {
 
         // eslint-disable-next-line
     }, [isMStateChange, backwardInput, DFACurrent.id]);
-  
-    console.log('backwardInput :>> ', backwardInput);
 
     return (
-        <motion.div 
+        <motion.div
             className="move"
             style={{
                 height: clampSize,
-                width: clampSize ,
-                scale : `${movingDown ? 0.4 : 1}`,
-                transition: `${movingDown ? 'transform 0.5s linear' : clampState.isGrab ? 'transform 0.5s linear' : ''}`,
+                width: clampSize,
+                scale: `${movingDown ? 0.6 : 1}`,
+                transition: `${
+                    movingDown
+                        ? "transform 0.5s linear"
+                        : clampState.isGrab
+                        ? "transform 5ms linear"
+                        : ""
+                }`,
             }}
             animate={clampPos}
         >
-            <img src={clampState.isHave ? GrabberGrab : Grabber} style={{height:'100%', width: '100%'}} alt={""} />
+            <img
+                src={clampState.isHave ? GrabberGrab : Grabber}
+                style={{ height: "100%", width: "100%" }}
+                alt={""}
+            />
         </motion.div>
     );
 };
