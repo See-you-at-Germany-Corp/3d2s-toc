@@ -12,16 +12,16 @@ const ClampDoll = (): React.ReactElement => {
     const dollData = dollDatas[clampState.dollType];
 
     const clampDollPos = {
-        x: clampState.isHave ? clampPos.x - 100 : clampPos.x - 60,
-        y: clampState.isHave ? clampPos.y - 100 : clampPos.y - 60,
+        x: clampState.isHave ? clampPos.x - 60 : clampPos.x - 20,
+        y: clampState.isHave ? clampPos.y - 60 : clampPos.y - 20,
     };
 
     return (
         <motion.div
             className="clamp-doll-item"
             style={{
-                height: `${clampState.isHave ? 280 : 200}px`,
-                width: `${clampState.isHave ? 280 : 200}px`,
+                height: `${clampState.isHave ? 200 : 120}px`,
+                width: `${clampState.isHave ? 200 : 120}px`,
                 backgroundImage: `url(${dollData?.img})`,
                 backgroundSize: "cover",
                 transition: `height 1s linear, width 1s linear`,

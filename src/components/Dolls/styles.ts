@@ -6,10 +6,10 @@ export const DollContainer = styled.div`
     background: #fbfbfb;
     display: grid;
     grid-template-columns: auto auto auto auto auto;
-    grid-template-rows: 200px 200px 200px 200px;
-    width: 1000px;
-    height: 1000px;
-    padding: 100px;
+    grid-template-rows: 120px 120px 120px 120px 120px;
+    width: 600px;
+    height: 600px;
+    padding: 50px;
 `;
 
 const randomDeg = `${(_.random(0, 36) * 10) / _.random(2, 9)}deg`;
@@ -28,7 +28,7 @@ export const DollBox = styled.div<IDollBoxProps>`
     background-image: url(${(props: IDollBoxProps) => props.backgroundImg});
     background-size: cover;
     transform: ${(props: IDollBoxProps) => props.rotateString};
-    width: 200px;
-    height: 200px;
+    width: 120px;
+    height: 120px;
     animation: ${shake} 40s infinite linear;
 `;

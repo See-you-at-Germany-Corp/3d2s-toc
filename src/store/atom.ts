@@ -4,8 +4,8 @@ import { IClampState, IClampPositionState } from "../types/clamp.types";
 import { IDollState } from "../types/doll.types";
 
 const defaultClampPosition: IClampPositionState = {
-    x: 100,
-    y: 1020,
+    x: 50,
+    y: 580,
 };
 
 const defaultClampState: IClampState = {

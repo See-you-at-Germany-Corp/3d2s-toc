@@ -34,7 +34,7 @@ const Clamp = (): React.ReactElement => {
         y: [],
     });
 
-    const machineSize = 1000;
+    const machineSize = 700;
     const clampSize: number = 80;
     const clampStep: number = 20;
 
@@ -75,14 +75,14 @@ const Clamp = (): React.ReactElement => {
             }));
         }
     }
-
+    
     function getDollIndex(): number {
         function getClampArrayPos(
             clampPos: { x: number; y: number },
             clampSize: number = 80,
-            dollSize: number = 200
+            dollSize: number = 120
         ): { row: number; col: number } {
-            const machinePadding: number = 100;
+            const machinePadding: number = 50;
 
             const col: number = Math.floor(
                 (clampPos.x - machinePadding + clampSize - clampSize / 2) /
@@ -122,20 +122,20 @@ const Clamp = (): React.ReactElement => {
 
         switch (input) {
             case "W": {
-                if (position.y + clampSize < 200) isCanmove = false;
+                if (position.y + clampSize < 140) isCanmove = false;
                 break;
             }
             case "A": {
-                if (position.x + clampSize < 200) isCanmove = false;
+                if (position.x + clampSize < 140) isCanmove = false;
                 break;
             }
             case "S": {
-                if (position.y - clampSize > machineSize - clampSize)
+                if (position.y - clampSize > machineSize - 220)
                     isCanmove = false;
                 break;
             }
             case "D": {
-                if (position.x - clampSize > machineSize - clampSize)
+                if (position.x - clampSize > machineSize - 220)
                     isCanmove = false;
                 break;
             }
@@ -350,6 +350,8 @@ const Clamp = (): React.ReactElement => {
         // eslint-disable-next-line
     }, [isMStateChange, backwardInput, DFACurrent.id]);
   
+    console.log('backwardInput :>> ', backwardInput);
+
     return (
         <motion.div
             className="move"
