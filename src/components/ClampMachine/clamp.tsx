@@ -2,6 +2,8 @@ import React from "react";
 import _ from "lodash";
 import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
 import { motion } from "framer-motion";
+import Grabber from './Graber.png';
+import GrabberGrab from './GraberGrab.png';
 
 import {
     clampStore,
@@ -24,6 +26,7 @@ const Clamp = (): React.ReactElement => {
     const [clampPos, setClampPos] = useRecoilState(clampPositionStore);
     const [clampState, setClamp] = useRecoilState(clampStore);
     const [dollState, setDoll] = useRecoilState(dollStore);
+    const [movingDown, setMovingDown] = React.useState(false);
 
     const DFACurrent = useRecoilValue(DFACurrentState);
     const setDFA = useSetRecoilState(DFASelector);
@@ -292,12 +295,14 @@ const Clamp = (): React.ReactElement => {
                     break;
                 }
                 case machineStateData.MOVE_DOWN: {
+                    setMovingDown(true)
                     setTimeout(() => {
                         inputToDFA("B");
                     }, 500);
                     break;
                 }
                 case machineStateData.GRAB: {
+                    setMovingDown(false)
                     if (!clampState.isGrab) {
                         grabDoll(isClampGetDoll());
                     }
@@ -353,11 +358,18 @@ const Clamp = (): React.ReactElement => {
     console.log('backwardInput :>> ', backwardInput);
 
     return (
-        <motion.div
+        <motion.div 
             className="move"
-            style={{ height: clampSize, width: clampSize }}
+            style={{
+                height: clampSize,
+                width: clampSize ,
+                scale : `${movingDown ? 0.4 : 1}`,
+                transition: `${movingDown ? 'transform 0.5s linear' : clampState.isGrab ? 'transform 0.5s linear' : ''}`,
+            }}
             animate={clampPos}
-        ></motion.div>
+        >
+            <img src={clampState.isHave ? GrabberGrab : Grabber} style={{height:'100%', width: '100%'}} alt={""} />
+        </motion.div>
     );
 };
 
