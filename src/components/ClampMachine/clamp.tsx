@@ -319,7 +319,7 @@ const Clamp = (): React.ReactElement => {
         // eslint-disable-next-line
     }, [isMStateChange, backwardInput, DFACurrent.id]);
 
-    console.log('DFACurrent.name :>> ', DFACurrent.name);
+    // console.log('DFACurrent.name :>> ', DFACurrent.name);
 
     return (
         <motion.div
