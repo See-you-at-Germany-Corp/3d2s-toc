@@ -1,42 +1,41 @@
-import React, { useEffect } from "react";
+import React from "react";
 import styled from "styled-components";
 
 // import Xarrow from "react-xarrows";
 import { MapInteractionCSS } from "react-map-interaction";
 
-import { useRecoilValue, useSetRecoilState } from "recoil";
-import { DFACurrentState, DFASelector, DFAMachine } from "../../store/index";
+import { useRecoilValue } from "recoil";
+import { DFACurrentState } from "../../store/index";
 
 import { DFANode } from "./DFANode";
 
+import dfa_graph from "../../asset/DFA_graph.png";
+
 const DFAGraph: React.FC = () => {
     const currentState = useRecoilValue(DFACurrentState);
-    const machineState = useRecoilValue(DFAMachine);
-    const setDFASelector = useSetRecoilState(DFASelector);
-
-    useEffect(() => {}, []);
 
     return (
         <Container>
             <MapInteractionCSS>
-                {machineState.states.map((state, i) => (
-                    <DFANode state={state} key={`node-${i}`} />
-                ))}
-                <button onClick={() => setDFASelector("B")}>
-                    {currentState.id}
-                </button>
+                <img src={dfa_graph} alt="dfa graph" />
+                <DFANode state={currentState} />
             </MapInteractionCSS>
         </Container>
     );
 };
 
 const Container = styled.div`
-    width: 500px;
-    height: 500px;
+    width: 800px;
+    height: 800px;
+    margin-top: 25px;
 
     display: flex;
     background-color: blanchedalmond;
     justify-content: space-between;
+
+    img {
+        position: absolute;
+    }
 `;
 
 export default DFAGraph;
