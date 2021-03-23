@@ -4,10 +4,11 @@ export interface iMachine {
 }
 
 export interface iState {
-    id: number;
-    name: string;
     x: number;
     y: number;
+    id: number;
+    name: string;
+    isFinal?: boolean;
 }
 
 export interface iTransition {
