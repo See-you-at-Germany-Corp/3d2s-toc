@@ -42,7 +42,7 @@ const ClampMachine: React.FC = () => {
     return (
         <div className="machine">
             {
-                display ? 
+                (display && dollDatas[0].id != 0 )? 
                     <Confetti 
                         style={{
                             width:'100%'

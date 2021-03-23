@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import Popup from 'reactjs-popup';
+// import Popup from 'reactjs-popup';
 import {motion} from 'framer-motion';
 
 export const Container = styled.div`

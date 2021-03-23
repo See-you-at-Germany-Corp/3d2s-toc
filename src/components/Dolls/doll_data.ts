@@ -6,6 +6,11 @@ export interface IDollData {
 
 export const dollDatas: IDollData[] = [
     {
+        id: 0,
+        name: "empty",
+        img: "",
+    },
+    {
         id: 1,
         name: "doll_1",
         img:
