@@ -1,12 +1,3 @@
-.machine {
-    background: #333333;
-    width: 700px;
-    height: 700px;
-    padding: 50px;
-    margin: 25px;
-    display: flex;
-}
-
 .move {
     position: absolute;
     z-index: 100; 
