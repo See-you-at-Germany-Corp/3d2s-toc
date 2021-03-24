@@ -6,7 +6,11 @@ import DollGroup from "../Dolls";
 import ClampDoll from "../Dolls/clamp_doll";
 import CoinBox from "./coin_box";
 
-import { clampStore } from "../../store";
+import TextOverlay from "../TextOverlay";
+
+import { clampStore, DFACurrentState } from "../../store";
+
+import { machineStateData } from '../../types/machineStateData';
 
 import { MachineContiner } from "./style";
 import "./style.css";
@@ -22,7 +26,25 @@ const CoinRemain: React.FC = () => {
     );
 }
 
-const ClampMachine: React.FC = () => { 
+const ClampMachine: React.FC = () => {
+    const [isOpen, setIsOpen] = React.useState<boolean>(false);
+    const DFACurrent = useRecoilValue(DFACurrentState);
+    
+    React.useEffect(() => {
+        switch (DFACurrent.id) {
+            case machineStateData.READY_TO_PLAY: {
+                if (!isOpen) setIsOpen(true);
+                break;
+            }
+            case machineStateData.READY_TO_GRAB: { 
+                if (isOpen) setIsOpen(false);
+                break;
+            }
+            default:
+                break;
+        }
+    }, [DFACurrent, isOpen]);
+
     return (
         <div className="machine-container">
             <MachineContiner className="machine">
@@ -30,8 +52,16 @@ const ClampMachine: React.FC = () => {
                 <ClampDoll />
                 <DollGroup />
                 <CoinRemain />
+                <TextOverlay
+                    text="Press Spacebar to Start."
+                    top={380}
+                    left={75}
+                    isOpen={isOpen}
+                    isBlink={true}
+                />
             </MachineContiner>
 
+            <div className="button-box"></div>
             <CoinBox />
         </div>
     );
