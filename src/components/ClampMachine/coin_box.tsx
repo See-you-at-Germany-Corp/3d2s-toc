@@ -63,6 +63,7 @@ const CoinBox = (): React.ReactElement => {
         getCoinLists(_.random(4, 8))
     );
     const [removedCoinLists, setRemovedCoin] = React.useState<number[]>([]);
+    const [isStarting, setIsStart] = React.useState<boolean>(false);
 
     const setDFA = useSetRecoilState(DFASelector);
     const DFACurrent = useRecoilValue(DFACurrentState);
@@ -112,24 +113,19 @@ const CoinBox = (): React.ReactElement => {
         }));
     }
 
-    function addCoinToMachine() {
-        setClamp((prev: IClampState) => ({
-            ...prev,
-            coin: prev.coin - 1,
-        }));
-        setDFA("B");
-    }
-
     React.useEffect(() => {
         if (DFACurrent.id >= machineStateData.READY_TO_GRAB) setRemovedCoin([]);
 
         switch (DFACurrent.id) {
             case machineStateData.IDLE: {
-                if (clampState.coin > 0) addCoinToMachine();
+                if (clampState.coin >= 1) {
+                    setIsStart(false);
+                    setDFA("B");
+                }
                 break;
             }
             case machineStateData.FIRST_COIN: {
-                if (clampState.coin > 0) addCoinToMachine();
+                if (clampState.coin >= 2) setDFA("B");
                 break;
             }
             case machineStateData.RETURN_COIN: {
@@ -137,11 +133,20 @@ const CoinBox = (): React.ReactElement => {
                 setDFA("B");
                 break;
             }
+            case machineStateData.READY_TO_GRAB: {
+                if (!isStarting && clampState.coin >= 2)
+                    setClamp((prev) => ({
+                        ...prev,
+                        coin: prev.coin - 2,
+                    }));
+                setIsStart(true);
+                break;
+            }
             default:
                 break;
         }
         // eslint-disable-next-line
-    }, [DFACurrent, clampState.coin]);
+    }, [DFACurrent.id, clampState.coin]);
 
     return (
         <CoinBoxContainer>

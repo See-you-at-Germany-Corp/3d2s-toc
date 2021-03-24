@@ -8,6 +8,21 @@ export const MachineContiner = styled.div`
     padding: 50px;
     margin: 25px 25px 0 25px;
     display: flex;
+
+    .coin-remaining-box 
+    {
+        /* background: red; */
+        display: flex;
+        position: absolute;
+        top: 710px;
+        left: 600px;
+
+        p {
+            font-size: 2rem;
+            padding: 0;
+            margin: 5px;
+        }
+    }
 `;
 
 export const CoinBoxContainer = styled.div`
@@ -34,16 +49,17 @@ export const CoinHoleContainer = styled(motion.div)`
         height: 80%;
         display: flex;
         justify-content: center;
+        align-items: center;
 
         .coin-hole {
             background: #222222;
-            width: 30%;
-            height: 100%;
+            width: 20%;
+            height: 80%;
         }
     }
 
     .coin-withdraw-box {
-        background: deepskyblue;
+        background: steelblue;
         width: 100%;
         height: 20%;
 
@@ -64,7 +80,11 @@ export const CoinContainer = styled(motion.div)`
     display: flex; 
 
     :hover {
-        cursor: pointer;
+        cursor: grab;
+    }
+
+    :active {
+        cursor: grabbing;
     }
 
     img {

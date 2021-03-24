@@ -18,6 +18,10 @@ const shake = keyframes`
   50% { transform: rotate(${randomDeg})}
 }`;
 
+const expand = keyframes`
+  50% { transform: scale(1.75) }
+}`;
+
 interface IDollBoxProps {
     backgroundImg?: string;
     rotateString?: string;
@@ -31,4 +35,10 @@ export const DollBox = styled.div<IDollBoxProps>`
     width: 120px;
     height: 120px;
     animation: ${shake} 40s infinite linear;
+
+    :hover {
+        animation: ${expand} 2s infinite ease-in-out;
+        transform: none;
+        z-index: 10;
+    }
 `;

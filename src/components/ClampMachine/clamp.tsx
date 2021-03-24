@@ -249,10 +249,11 @@ const Clamp = (): React.ReactElement => {
         if (isMStateChange)
             switch (DFACurrent.id) {
                 case machineStateData.IDLE: {
-                    setClamp((prev) => ({
-                        ...prev,
-                        dollType: 0,
-                    }));
+                    if (clampState.dollType !== 0)
+                        setClamp((prev) => ({
+                            ...prev,
+                            dollType: 0,
+                        }));
                     break;
                 }
                 case machineStateData.MOVE_FORWARD: {
@@ -325,9 +326,7 @@ const Clamp = (): React.ReactElement => {
 
         // eslint-disable-next-line
     }, [isMStateChange, backwardInput, DFACurrent.id]);
-
-    // console.log('DFACurrent.name :>> ', DFACurrent.name);
-
+  
     return (
         <motion.div
             className="move"
