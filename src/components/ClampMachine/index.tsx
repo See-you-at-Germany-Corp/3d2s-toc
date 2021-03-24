@@ -1,5 +1,5 @@
 import React from "react";
-import { useRecoilValue } from "recoil";
+import { useRecoilValue, useRecoilState, useSetRecoilState } from "recoil";
 
 import Clamp from "./clamp";
 import DollGroup from "../Dolls";
@@ -8,16 +8,15 @@ import CoinBox from "./coin_box";
 
 import TextOverlay from "../TextOverlay";
 
-import { clampStore, DFACurrentState } from "../../store";
+import { clampStore, DFACurrentState, displayConfetti, DFASelector } from "../../store";
 
 import { machineStateData } from '../../types/machineStateData';
 
 import { MachineContiner } from "./style";
 import "./style.css";
 import GamePopup from "../Popup/Popup";
-import {dollDatas} from '../Dolls/doll_data';
+import { dollDatas } from '../Dolls/doll_data';
 import Confetti from 'react-confetti'
-import {motion} from 'framer-motion';
 
 
 
@@ -36,16 +35,18 @@ const CoinRemain: React.FC = () => {
 const ClampMachine: React.FC = () => {
     const [isOpen, setIsOpen] = React.useState<boolean>(false);
     const DFACurrent = useRecoilValue(DFACurrentState);
-    const [display, setDisplay] = React.useState(false)
-    const [cycle, setCycle] = React.useState(false)
-    
+    const [clampState,setClamp] = useRecoilState(clampStore);
+    const setDFA = useSetRecoilState(DFASelector);
+    const [display, setDisplay] = useRecoilState(displayConfetti);
+    // const [cycle, setCycle] = React.useState(false)
+
     React.useEffect(() => {
         switch (DFACurrent.id) {
             case machineStateData.READY_TO_PLAY: {
                 if (!isOpen) setIsOpen(true);
                 break;
             }
-            case machineStateData.READY_TO_GRAB: { 
+            case machineStateData.READY_TO_GRAB: {
                 if (isOpen) setIsOpen(false);
                 break;
             }
@@ -55,7 +56,7 @@ const ClampMachine: React.FC = () => {
     }, [DFACurrent, isOpen]);
 
     return (
-            
+
         <div className="machine-container">
             <MachineContiner className="machine">
                 <Clamp />
@@ -70,21 +71,40 @@ const ClampMachine: React.FC = () => {
                     isBlink={true}
                 />
                 {
-                (display && dollDatas[0].id != 0 )? 
-                    <Confetti 
-                        style={{
-                            width:'100%'
-                        }}
-                        recycle={cycle}
-                        onConfettiComplete={(confetti)=> (confetti?.stop,setDisplay(false))}
-                    /> 
-                :
-                    <></>
+                    (display.display && (dollDatas[clampState?.dollType]?.id !== 0) &&  dollDatas[clampState?.dollType]) ?
+                        <Confetti
+                            style={{
+                                width: '100%'
+                            }}
+                            recycle={display.cycle}
+                            // eslint-disable-next-line
+                            onConfettiComplete={(confetti) => (confetti?.stop, setDisplay(
+                                (prev) => ({ 
+                                    ...prev ,
+                                    display: false
+                                })))}
+                        />
+                        :
+                        <></>
 
                 }
-                <DollGroup />
-                <button onClick={()=>{setDisplay(true);setCycle(true)}}> Test Confetti</button>
-                <GamePopup data={dollDatas[0]} open={cycle} onClose={()=>setCycle(false)}/>
+                {/* <button onClick={() => { }}> Test Confetti</button> */}
+                <GamePopup data={dollDatas[clampState?.dollType]} open={display.cycle} 
+                onClose={
+                    () => {
+                        setDisplay(
+                            (prev) => ({ 
+                                ...prev ,
+                                cycle: false,
+                            })
+                        )
+                        setDFA("X")
+                        setClamp((prev) => ({
+                            ...prev,
+                            dollType: 0,
+                        }));
+                        }  
+                    }/>
             </MachineContiner>
 
             <div className="button-box"></div>

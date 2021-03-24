@@ -11,6 +11,7 @@ import {
     dollStore,
     DFACurrentState,
     DFASelector,
+    displayConfetti
 } from "../../store";
 
 import { machineStateData } from "../../types/machineStateData";
@@ -30,6 +31,7 @@ const Clamp = (): React.ReactElement => {
 
     const DFACurrent = useRecoilValue(DFACurrentState);
     const setDFA = useSetRecoilState(DFASelector);
+    const setDisplay = useSetRecoilState(displayConfetti);
 
     const [isMStateChange, setIsMStateChange] = React.useState<boolean>(false);
     const [backwardInput, setBackwardInput] = React.useState<IBackwardInput>({
@@ -311,12 +313,13 @@ const Clamp = (): React.ReactElement => {
                             isHave: false,
                         }));
                     }, 400);
+                    setDisplay({display:true, cycle:true})
                     setTimeout(inputToDFA, 1400, "B");
                     break;
                 }
                 case machineStateData.RESULT: {
                     /// tricker result popup here.
-                    alert("เต้น่ารัก");
+                    // alert("เต้น่ารัก");
                     break;
                 }
 
