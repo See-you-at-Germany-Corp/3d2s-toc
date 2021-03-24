@@ -227,15 +227,15 @@ const Clamp = (): React.ReactElement => {
                         inputToDFA("D");
                     break;
                 case "Space":
-                    if (!DFADisableKeyLists.includes(DFACurrent.id))
-                        inputToDFA("X");
+                    // if (!DFADisableKeyLists.includes(DFACurrent.id))
+                    inputToDFA("X");
                     break;
                 default:
                     break;
             }
         },
         // eslint-disable-next-line
-        [clampState.isGrab, clampState.isHave, clampPos]
+        [clampState, clampPos]
     );
 
     React.useEffect(() => {
@@ -248,6 +248,13 @@ const Clamp = (): React.ReactElement => {
         setIsMStateChange(false);
         if (isMStateChange)
             switch (DFACurrent.id) {
+                case machineStateData.IDLE: {
+                    setClamp((prev) => ({
+                        ...prev,
+                        dollType: 0,
+                    }));
+                    break;
+                }
                 case machineStateData.MOVE_FORWARD: {
                     setClampPosition(0, -clampStep);
                     break;

@@ -4,9 +4,9 @@ import { iState } from "../types/dfa.types";
 const DFACurrentState = atom({
     key: "DFAState",
     default: {
-        id: 5,
-        name: "READY_TO_GRAB",
-        x: 1167,
+        id: 1,
+        name: "IDLE",
+        x: 216,
         y: 410,
     } as iState,
 });

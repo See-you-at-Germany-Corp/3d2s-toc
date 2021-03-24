@@ -12,6 +12,7 @@ const defaultClampState: IClampState = {
     isGrab: false,
     isHave: false,
     dollType: 0,
+    coin: 0,
 };
 
 export const clampStore = atom({
@@ -22,7 +23,7 @@ export const clampStore = atom({
 export const clampPositionStore = atom({
     key: "clampPositionStore",
     default: defaultClampPosition,
-});
+}); 
 
 /* ----------------------------------------------------- */
 

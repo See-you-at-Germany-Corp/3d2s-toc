@@ -1,8 +1,11 @@
 import React from "react";
 import _ from "lodash";
-import { useSetRecoilState, useRecoilValue } from "recoil";
+import { useSetRecoilState, useRecoilValue, useRecoilState } from "recoil";
 
-import { DFASelector, DFACurrentState } from "../../store";
+import { DFASelector, DFACurrentState, clampStore } from "../../store";
+
+import { machineStateData } from "../../types/machineStateData";
+import { IClampState } from "../../types/clamp.types";
 
 import { CoinBoxContainer, CoinHoleContainer, CoinContainer } from "./style";
 
@@ -63,6 +66,7 @@ const CoinBox = (): React.ReactElement => {
 
     const setDFA = useSetRecoilState(DFASelector);
     const DFACurrent = useRecoilValue(DFACurrentState);
+    const [clampState, setClamp] = useRecoilState(clampStore);
 
     function getCoinLists(max: number): number[] {
         let coinLists = [];
@@ -84,26 +88,61 @@ const CoinBox = (): React.ReactElement => {
 
     function insertCoin(coinID: number) {
         if (coinLists.length > 0) {
+            setClamp((prev: IClampState) => ({
+                ...prev,
+                coin: prev.coin + 1,
+            }));
+
             removeCoin(coinID);
-            setDFA("B");
         }
     }
 
     function withdrawCoin() {
-        if (removedCoinLists.length > 0) {
-            const removedCoin = _.last(removedCoinLists) as number;
-            setRemovedCoin(_.dropRight(removedCoinLists)); 
-            setCoinLists(coinLists.concat(removedCoin));
-            setDFA("Y");
-            setDFA("B");
-        }
+        if (removedCoinLists.length > 0) setDFA("Y");
+    }
+
+    function returnCoin() {
+        const removedCoin = _.dropRight(removedCoinLists, 0) as number[];
+        setRemovedCoin([]);
+        setCoinLists(coinLists.concat(removedCoin));
+
+        setClamp((prev: IClampState) => ({
+            ...prev,
+            coin: 0,
+        }));
+    }
+
+    function addCoinToMachine() {
+        setClamp((prev: IClampState) => ({
+            ...prev,
+            coin: prev.coin - 1,
+        }));
+        setDFA("B");
     }
 
     React.useEffect(() => {
-        if (DFACurrent.id >= 5)
-            setRemovedCoin([])
-    }, [DFACurrent]);
-  
+        if (DFACurrent.id >= machineStateData.READY_TO_GRAB) setRemovedCoin([]);
+
+        switch (DFACurrent.id) {
+            case machineStateData.IDLE: {
+                if (clampState.coin > 0) addCoinToMachine();
+                break;
+            }
+            case machineStateData.FIRST_COIN: {
+                if (clampState.coin > 0) addCoinToMachine();
+                break;
+            }
+            case machineStateData.RETURN_COIN: {
+                returnCoin();
+                setDFA("B");
+                break;
+            }
+            default:
+                break;
+        }
+        // eslint-disable-next-line
+    }, [DFACurrent, clampState.coin]);
+
     return (
         <CoinBoxContainer>
             <CoinHole withdrawCoin={withdrawCoin} />
