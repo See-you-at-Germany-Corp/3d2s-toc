@@ -14,6 +14,13 @@ import { machineStateData } from '../../types/machineStateData';
 
 import { MachineContiner } from "./style";
 import "./style.css";
+import GamePopup from "../Popup/Popup";
+import {dollDatas} from '../Dolls/doll_data';
+import Confetti from 'react-confetti'
+import {motion} from 'framer-motion';
+
+
+
 
 const CoinRemain: React.FC = () => {
     const clampState = useRecoilValue(clampStore);
@@ -29,6 +36,8 @@ const CoinRemain: React.FC = () => {
 const ClampMachine: React.FC = () => {
     const [isOpen, setIsOpen] = React.useState<boolean>(false);
     const DFACurrent = useRecoilValue(DFACurrentState);
+    const [display, setDisplay] = React.useState(false)
+    const [cycle, setCycle] = React.useState(false)
     
     React.useEffect(() => {
         switch (DFACurrent.id) {
@@ -46,6 +55,7 @@ const ClampMachine: React.FC = () => {
     }, [DFACurrent, isOpen]);
 
     return (
+            
         <div className="machine-container">
             <MachineContiner className="machine">
                 <Clamp />
@@ -59,6 +69,22 @@ const ClampMachine: React.FC = () => {
                     isOpen={isOpen}
                     isBlink={true}
                 />
+                {
+                (display && dollDatas[0].id != 0 )? 
+                    <Confetti 
+                        style={{
+                            width:'100%'
+                        }}
+                        recycle={cycle}
+                        onConfettiComplete={(confetti)=> (confetti?.stop,setDisplay(false))}
+                    /> 
+                :
+                    <></>
+
+                }
+                <DollGroup />
+                <button onClick={()=>{setDisplay(true);setCycle(true)}}> Test Confetti</button>
+                <GamePopup data={dollDatas[0]} open={cycle} onClose={()=>setCycle(false)}/>
             </MachineContiner>
 
             <div className="button-box"></div>
