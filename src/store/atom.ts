@@ -23,7 +23,15 @@ export const clampStore = atom({
 export const clampPositionStore = atom({
     key: "clampPositionStore",
     default: defaultClampPosition,
-}); 
+});
+
+export const displayConfetti = atom({
+    key: "displayConffeti",
+    default: {
+        display: false,
+        cycle: false
+    },
+});
 
 /* ----------------------------------------------------- */
 
