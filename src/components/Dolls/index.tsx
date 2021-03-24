@@ -1,49 +1,24 @@
 import React from "react";
 import _ from "lodash";
+import { useRecoilValue } from 'recoil'
 
-import { IDollData, dollDatas } from './doll_data'
+import Doll from './doll';
 
-import { DollContainer, DollBox } from "./styles";
+import { IDollData, dollDatas } from "./doll_data";
 
-interface IDollProps {
-    dollData: IDollData;
-}
+import { dollStore } from '../../store'
 
-const Doll = (props: IDollProps): React.ReactElement => {
-    const dollData = props.dollData;
-
-    return (
-        <DollBox className="doll-item">
-            <p>{dollData.name}</p>
-            <img src={dollData.img} alt={dollData.name} />
-        </DollBox>
-    );
-};
-
-function randomDollItems(maxDoll: number = 20): number[] {
-    let dollItems: number[] = [];
-
-    for (let i: number = 0; i < maxDoll; i++) {
-        dollItems.push(_.random(0, 2));
-    }
-
-    return dollItems;
-}
-
-const DollGroup = (): React.ReactElement => {
-    const [dollState, setDollState] = React.useState({
-        items: randomDollItems(_.random(15, 20)),
-    });
-
-    // console.log(dollState.items);
-
+import { DollContainer } from "./styles";
+ 
+const DollGroup = (): React.ReactElement => { 
+    const dollState = useRecoilValue(dollStore);
+ 
     return (
         <DollContainer>
-            {/* {_.map(dollState.items, (dollType: number, index: number) => {
+            {_.map(dollState.dollTypes, (dollType: number, index: number) => {
                 const dollData: IDollData = dollDatas[dollType];
-                return <Doll key={index} dollData={dollData} />;
-            })} */}
-            <h1>Hello from Dolls.</h1>
+                return <Doll key={index} dollID={index} dollData={dollData} />;
+            })}
         </DollContainer>
     );
 };

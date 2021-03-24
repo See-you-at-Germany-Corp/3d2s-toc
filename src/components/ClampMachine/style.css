@@ -1,6 +1,17 @@
-
 .move {
-    height: 30px;
-    width: 30px;
-    background-color: red;
+    position: absolute;
+    z-index: 100;
+    /* background-color: red; */
+}
+
+.clamp-doll-item {
+    position: absolute;
+    z-index: 99;
+}
+
+.button-box {
+    width: 800px;
+    height: 250px;
+    background: lightpink;
+    margin-left: 25px;
 }
