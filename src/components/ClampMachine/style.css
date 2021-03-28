@@ -2,16 +2,62 @@
     position: absolute;
     z-index: 100;
     /* background-color: red; */
+    pointer-events: none;
 }
-
+ 
 .clamp-doll-item {
     position: absolute;
     z-index: 99;
 }
 
 .button-box {
+    background: lightpink;
     width: 800px;
     height: 250px;
-    background: lightpink;
-    margin-left: 25px;
+
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: space-between;
+}
+
+.coin-remaining-container {
+    width: 33%;
+    display: flex;
+    flex-flow: column wrap;
+    justify-content: center;
+    align-items: center;
+}
+
+.coin-remaining-container .coin-img-box {
+    width: 150px;
+    height: 150px;
+    background-size: contain;
+    background-image: url("https://cdn.discordapp.com/attachments/817783466379968572/823885361872502834/unknown-removebg-preview.png");
+}
+
+.coin-remaining-container .coin-remaining-box {
+    display: flex;
+    flex-flow: row wrap;
+    align-items: center;
+    justify-items: center;
+    justify-content: center;
+}
+
+.coin-remaining-container .coin-remaining-box p {
+    color: white;
+    padding: 0;
+    margin: 0;
+    font-weight: bold;
+    font-size: 2.5rem;  
+    text-shadow: 4px 4px rgba(0, 0, 0, 0.1);
+}
+
+.controller-container {
+    width: 33%;
+    display: flex;
+}
+
+.start-container {
+    width: 33%;
+    display: flex;
 }

@@ -4,24 +4,20 @@ import { TextOverlayContainer } from "./style";
 
 interface ITextOverlayProps {
     text: string;
-    top?: number;
-    right?: number;
-    bottom?: number;
-    left?: number;
+    marginTop?: number | string;
+    marginLeft?: number | string;
     isOpen: boolean | false;
     isBlink: boolean | false;
 }
 
 const TextOverlay = (props: ITextOverlayProps): React.ReactElement => {
-    const { top, right, bottom, left, isOpen, isBlink } = { ...props };
+    const { marginTop, marginLeft, isOpen, isBlink } = { ...props };
 
     return (
         <TextOverlayContainer
             style={{
-                top,
-                right,
-                bottom,
-                left,
+                marginTop,
+                marginLeft,
                 display: `${isOpen ? "block" : "none"}`,
             }}
             isBlink={isBlink}

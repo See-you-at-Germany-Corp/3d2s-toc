@@ -11,7 +11,7 @@ import {
     dollStore,
     DFACurrentState,
     DFASelector,
-    displayConfetti
+    displayConfetti,
 } from "../../store";
 
 import { machineStateData } from "../../types/machineStateData";
@@ -229,7 +229,7 @@ const Clamp = (): React.ReactElement => {
                         inputToDFA("D");
                     break;
                 case "Space":
-                    // if (!DFADisableKeyLists.includes(DFACurrent.id))
+                    if (!DFADisableKeyLists.includes(DFACurrent.id))
                     inputToDFA("X");
                     break;
                 default:
@@ -237,7 +237,7 @@ const Clamp = (): React.ReactElement => {
             }
         },
         // eslint-disable-next-line
-        [clampState, clampPos]
+        [clampState, clampPos, DFACurrent.id]
     );
 
     React.useEffect(() => {
@@ -312,14 +312,13 @@ const Clamp = (): React.ReactElement => {
                             isGrab: false,
                             isHave: false,
                         }));
-                    }, 400);
-                    setDisplay({display:true, cycle:true})
+                    }, 400); 
                     setTimeout(inputToDFA, 1400, "B");
                     break;
                 }
                 case machineStateData.RESULT: {
                     /// tricker result popup here.
-                    // alert("เต้น่ารัก");
+                    setDisplay({ display: true, cycle: true });
                     break;
                 }
 
@@ -329,7 +328,7 @@ const Clamp = (): React.ReactElement => {
 
         // eslint-disable-next-line
     }, [isMStateChange, backwardInput, DFACurrent.id]);
-  
+
     return (
         <motion.div
             className="move"
