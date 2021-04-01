@@ -4,7 +4,7 @@
     /* background-color: red; */
     pointer-events: none;
 }
- 
+
 .clamp-doll-item {
     position: absolute;
     z-index: 99;
@@ -48,16 +48,53 @@
     padding: 0;
     margin: 0;
     font-weight: bold;
-    font-size: 2.5rem;  
+    font-size: 2.5rem;
     text-shadow: 4px 4px rgba(0, 0, 0, 0.1);
 }
 
 .controller-container {
     width: 33%;
-    display: flex;
+    height: 33%;
+    margin-top: 10px;
+}
+.grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+}
+
+.arrow {
+    width: 75px;
+    height: 75px;
+    background-size: contain;
+    background-image: url("https://media.discordapp.net/attachments/690099923680755750/826933205109833728/up.png");
+}
+
+.down {
+    transform: rotate(180deg);
+}
+.left {
+    transform: rotate(-90deg);
+}
+.right {
+    transform: rotate(90deg);
 }
 
 .start-container {
     width: 33%;
     display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 30px;
+}
+
+.start {
+    width: 130px;
+    height: 130px;
+    background-color: #daffd3;
+    border-radius: 50%;
+    box-shadow: 0 0 0 3px #00000011;
+}
+
+h1 {
+    color: white;
 }

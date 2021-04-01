@@ -91,8 +91,23 @@ const ClampMachine: React.FC = () => {
                     <div className="coin-img-box"></div>
                     <CoinRemain />
                 </div>
-                <div className="controller-container"></div>
-                <div className="start-container"></div>
+                <div className="controller-container">
+                    <div className="grid">
+                        <div className="empty"></div>
+                        <div className="arrow up"></div>
+                        <div className="empty"></div>
+                        <div className="arrow left"></div>
+                        <div className="empty"></div>
+                        <div className="arrow right"></div>
+                        <div className="empty"></div>
+                        <div className="arrow down"></div>
+                        <div className="empty"></div>
+                    </div>
+                </div>
+                <div className="start-container">
+                    <div className="start"></div>
+                    <h1>Start/Grab</h1>
+                </div>
             </div>
             <CoinBox />
         </div>
