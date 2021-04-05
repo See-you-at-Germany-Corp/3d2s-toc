@@ -69,12 +69,23 @@
     background-image: url("https://media.discordapp.net/attachments/690099923680755750/826933205109833728/up.png");
 }
 
+.arrow:hover {
+    cursor: pointer;
+    filter: brightness(90%);
+}
+
+.arrow:active {
+    filter: brightness(80%);
+}
+
 .down {
     transform: rotate(180deg);
 }
+
 .left {
     transform: rotate(-90deg);
 }
+
 .right {
     transform: rotate(90deg);
 }
@@ -93,6 +104,15 @@
     background-color: #daffd3;
     border-radius: 50%;
     box-shadow: 0 0 0 3px #00000011;
+}
+
+.start:hover {
+    cursor: pointer;
+    filter: brightness(90%);
+}
+
+.start:active {
+    filter: brightness(80%);
 }
 
 h1 {

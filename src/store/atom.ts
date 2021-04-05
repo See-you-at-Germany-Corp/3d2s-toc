@@ -29,8 +29,13 @@ export const displayConfetti = atom({
     key: "displayConffeti",
     default: {
         display: false,
-        cycle: false
+        cycle: false,
     },
+});
+
+export const isMStateStore = atom({
+    key: "isMStateStore",
+    default: false,
 });
 
 /* ----------------------------------------------------- */

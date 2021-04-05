@@ -16,10 +16,12 @@ import {
     DFACurrentState,
     displayConfetti,
     DFASelector,
+    isMStateStore,
 } from "../../store";
 
 import { machineStateData } from "../../types/machineStateData";
 import { dollDatas } from "../Dolls/doll_data";
+import { DFADisableKeyLists } from "./clamp_data";
 
 import { MachineContiner } from "./style";
 import "./style.css";
@@ -36,13 +38,63 @@ const CoinRemain: React.FC = () => {
     );
 };
 
+const ControlBox: React.FC = () => {
+    const DFACurrent = useRecoilValue(DFACurrentState);
+    const setDFA = useSetRecoilState(DFASelector);
+    const setIsMStateChange = useSetRecoilState(isMStateStore);
+
+    function inputToDFA(input: "W" | "A" | "S" | "D" | "X") {
+        if (!DFADisableKeyLists.includes(DFACurrent.id)) {
+            setDFA(input);
+            setIsMStateChange(true);
+        }
+    }
+
+    return (
+        <>
+            <div className="controller-container">
+                <div className="grid">
+                    <div className="empty"></div>
+                    <div
+                        className="arrow up"
+                        onMouseDown={() => inputToDFA("W")}
+                    ></div>
+                    <div className="empty"></div>
+                    <div
+                        className="arrow left"
+                        onMouseDown={() => inputToDFA("A")}
+                    ></div>
+                    <div className="empty"></div>
+                    <div
+                        className="arrow right"
+                        onMouseDown={() => inputToDFA("D")}
+                    ></div>
+                    <div className="empty"></div>
+                    <div
+                        className="arrow down"
+                        onMouseDown={() => inputToDFA("S")}
+                    ></div>
+                    <div className="empty"></div>
+                </div>
+            </div>
+            <div className="start-container">
+                <div
+                    className="start"
+                    onMouseDown={() => inputToDFA("X")}
+                ></div>
+                <h1>Start/Grab</h1>
+            </div>
+        </>
+    );
+};
+
 const ClampMachine: React.FC = () => {
     const [isOpen, setIsOpen] = React.useState<boolean>(false);
 
     const DFACurrent = useRecoilValue(DFACurrentState);
+    const setDFA = useSetRecoilState(DFASelector);
     const [clampState, setClamp] = useRecoilState(clampStore);
     const [display, setDisplay] = useRecoilState(displayConfetti);
-    const setDFA = useSetRecoilState(DFASelector);
 
     React.useEffect(() => {
         if (DFACurrent.id === machineStateData.READY_TO_PLAY) {
@@ -91,23 +143,7 @@ const ClampMachine: React.FC = () => {
                     <div className="coin-img-box"></div>
                     <CoinRemain />
                 </div>
-                <div className="controller-container">
-                    <div className="grid">
-                        <div className="empty"></div>
-                        <div className="arrow up"></div>
-                        <div className="empty"></div>
-                        <div className="arrow left"></div>
-                        <div className="empty"></div>
-                        <div className="arrow right"></div>
-                        <div className="empty"></div>
-                        <div className="arrow down"></div>
-                        <div className="empty"></div>
-                    </div>
-                </div>
-                <div className="start-container">
-                    <div className="start"></div>
-                    <h1>Start/Grab</h1>
-                </div>
+                <ControlBox />
             </div>
             <CoinBox />
         </div>

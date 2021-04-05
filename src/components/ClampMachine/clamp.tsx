@@ -12,9 +12,11 @@ import {
     DFACurrentState,
     DFASelector,
     displayConfetti,
+    isMStateStore,
 } from "../../store";
 
 import { machineStateData } from "../../types/machineStateData";
+import { DFADisableKeyLists } from "./clamp_data";
 
 import { machineInput } from "../../types/machine.type";
 
@@ -32,8 +34,8 @@ const Clamp = (): React.ReactElement => {
     const DFACurrent = useRecoilValue(DFACurrentState);
     const setDFA = useSetRecoilState(DFASelector);
     const setDisplay = useSetRecoilState(displayConfetti);
+    const [isMStateChange, setIsMStateChange] = useRecoilState(isMStateStore);
 
-    const [isMStateChange, setIsMStateChange] = React.useState<boolean>(false);
     const [backwardInput, setBackwardInput] = React.useState<IBackwardInput>({
         x: [],
         y: [],
@@ -42,17 +44,6 @@ const Clamp = (): React.ReactElement => {
     const machineSize = 700;
     const clampSize: number = 120;
     const clampStep: number = 20;
-
-    const DFADisableKeyLists = [
-        machineStateData.MOVE_DOWN,
-        machineStateData.GRAB,
-        machineStateData.MOVE_UP_GRAB,
-        machineStateData.READY_T0_BACK_GRAB,
-        machineStateData.MOVE_BACKKWARD_GRAB,
-        machineStateData.MOVE_LEFT_GRAB,
-        machineStateData.RELEASE,
-        machineStateData.RESULT,
-    ];
 
     function backwardCalculate(): IBackwardInput {
         const { row, col } = getClampArrayPos(clampPos, clampSize);
@@ -193,17 +184,21 @@ const Clamp = (): React.ReactElement => {
         const lenArrayY = backwardInput.y.length;
 
         if (lenArrayY > 0) {
-            setTimeout(inputToDFA, 40, "S");
-            setBackwardInput((prev) => ({
-                ...prev,
-                y: _.take(prev.y, lenArrayY - 1),
-            }));
+            setTimeout(() => {
+                setBackwardInput((prev) => ({
+                    ...prev,
+                    y: _.take(prev.y, lenArrayY - 1),
+                }));
+                inputToDFA("S");
+            }, 40);
         } else if (lenArrayX > 0) {
-            setTimeout(inputToDFA, 40, "A");
-            setBackwardInput((prev) => ({
-                ...prev,
-                x: _.take(prev.x, lenArrayX - 1),
-            }));
+            setTimeout(() => {
+                setBackwardInput((prev) => ({
+                    ...prev,
+                    x: _.take(prev.x, lenArrayX - 1),
+                }));
+                inputToDFA("A");
+            }, 40);
         } else {
             inputToDFA("B");
         }
@@ -230,7 +225,7 @@ const Clamp = (): React.ReactElement => {
                     break;
                 case "Space":
                     if (!DFADisableKeyLists.includes(DFACurrent.id))
-                    inputToDFA("X");
+                        inputToDFA("X");
                     break;
                 default:
                     break;
@@ -288,7 +283,6 @@ const Clamp = (): React.ReactElement => {
                     break;
                 }
                 case machineStateData.MOVE_UP_GRAB: {
-                    setTimeout(inputToDFA, 500, "B");
                     break;
                 }
                 case machineStateData.READY_T0_BACK_GRAB: {
@@ -312,8 +306,9 @@ const Clamp = (): React.ReactElement => {
                             isGrab: false,
                             isHave: false,
                         }));
-                    }, 400); 
-                    setTimeout(inputToDFA, 1400, "B");
+                        inputToDFA("B");
+                    }, 400);
+                    // setTimeout(inputToDFA, 1400, "B");
                     break;
                 }
                 case machineStateData.RESULT: {
