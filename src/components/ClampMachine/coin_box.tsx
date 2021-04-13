@@ -40,7 +40,7 @@ const Coin = (props: ICoinProps): React.ReactElement => {
 
     return (
         <CoinContainer
-            onDragEnd={() => setTimeout(insertCoin(id), 50)}
+            onDragEnd={() => setTimeout(insertCoin, 50, id)}
             drag
             animate={{ x: index * -30, y: 0 }}
             dragConstraints={{
@@ -49,11 +49,7 @@ const Coin = (props: ICoinProps): React.ReactElement => {
                 right: 400 - index * 80,
                 bottom: 0,
             }}
-        >
-            <img
-                src="https://cdn.discordapp.com/attachments/817783466379968572/823885361872502834/unknown-removebg-preview.png"
-                alt="coin-img"
-            />
+        > 
         </CoinContainer>
     );
 };

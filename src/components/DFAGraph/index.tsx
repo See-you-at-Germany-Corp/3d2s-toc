@@ -16,9 +16,6 @@ import { swing, shake } from "../ClampMachine/style";
 const DFAGraph: React.FC = () => {
     const currentState = useRecoilValue(DFACurrentState);
 
-    const scale = window.innerHeight / 1450;
-    const calculatedWidth = (window.innerWidth - 870 * scale) / scale - 25;
-
     return (
         <Container>
             <HeaderContainer>

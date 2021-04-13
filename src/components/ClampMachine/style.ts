@@ -74,9 +74,12 @@ export const CoinHoleContainer = styled(motion.div)`
 
 export const CoinContainer = styled(motion.div)`
     /* background-color: red; */
+    background-image: url("https://cdn.discordapp.com/attachments/817783466379968572/823885361872502834/unknown-removebg-preview.png");
+    background-size: contain;
     width: 100px;
     height: 100px;
     display: flex;
+    z-index: 10;
 
     :hover {
         cursor: grab;
@@ -84,13 +87,7 @@ export const CoinContainer = styled(motion.div)`
 
     :active {
         cursor: grabbing;
-    }
-
-    img {
-        width: 100%;
-        height: 100%;
-        pointer-events: none;
-    }
+    } 
 `;
 
 export const swing = keyframes` 
