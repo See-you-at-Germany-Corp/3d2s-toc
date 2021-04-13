@@ -93,7 +93,7 @@ export const CoinContainer = styled(motion.div)`
     }
 `;
 
-const swing = keyframes` 
+export const swing = keyframes` 
     15% {
         transform: translateX(5px);
     }
@@ -114,10 +114,10 @@ const swing = keyframes`
     } 
 `;
 
-const shake = keyframes`
+export const shake = keyframes`
   50% { transform: rotate(15deg)}
 }`;
- 
+
 export const ClampBannerContainer = styled.div`
     background: lightpink;
     display: flex;

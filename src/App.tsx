@@ -1,18 +1,29 @@
 import React from "react";
 import { RecoilRoot } from "recoil";
+import styled from "styled-components";
 import "./App.css";
 import ClampMachine from "./components/ClampMachine";
 import DFAGraph from "./components/DFAGraph";
 
+interface ContainerProps {
+    scale: number;
+}
+
 const App = (): React.ReactElement => {
     return (
         <RecoilRoot>
-            <div className="dfa-clamp-machine" style={{ display: "flex" }}>
+            <Container id="dfa-clamp-machine" scale={window.innerHeight / 1450}>
                 <ClampMachine />
                 <DFAGraph />
-            </div>
+            </Container>
         </RecoilRoot>
     );
 };
+
+const Container = styled.div<ContainerProps>`
+    display: flex;
+    transform-origin: top left;
+    transform: scale(${(p) => p.scale});
+`;
 
 export default App;

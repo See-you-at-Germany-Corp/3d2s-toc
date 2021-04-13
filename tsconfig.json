@@ -24,6 +24,6 @@
     "src"
   ],
   "files": [
-    "src/type/react-map-interaction.d.ts"
+    "src/type-declare/react-map-interaction.d.ts"
   ]
 }

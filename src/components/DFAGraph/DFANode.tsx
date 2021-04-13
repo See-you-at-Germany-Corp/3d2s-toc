@@ -26,6 +26,7 @@ const Container = styled.div<ContainerProps>`
     position: absolute;
     top: ${(p) => p.y}px;
     left: ${(p) => p.x}px;
+    transition: 0.1s ease-in-out;
     transform: translate(-50%, -50%);
 
     opacity: 0.5;

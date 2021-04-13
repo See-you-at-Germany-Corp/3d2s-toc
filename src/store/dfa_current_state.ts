@@ -8,6 +8,7 @@ const DFACurrentState = atom({
         name: "IDLE",
         x: 216,
         y: 410,
+        isFinal: true,
     } as iState,
 });
 
