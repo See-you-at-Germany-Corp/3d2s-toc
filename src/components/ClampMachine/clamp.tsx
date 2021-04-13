@@ -53,12 +53,20 @@ const Clamp = (): React.ReactElement => {
 
         let newBackwardX: string[] = [];
         let newBackwardY: string[] = [];
+  
+        if (row === 4)
+            for (let i: number = 0; i < 8; i++)
+                newBackwardY.push("S");
+        
+        if (col === 0)
+            for (let i: number = 0; i < 8; i++)
+                newBackwardX.push("A");
+  
+        for (let j: number = 0; j < backwardYAmount; j++)
+            newBackwardY.push("S");
 
         for (let i: number = 0; i < backwardXAmount; i++)
             newBackwardX.push("A");
-
-        for (let j: number = 0; j < backwardYAmount; j++)
-            newBackwardY.push("S");
 
         return {
             x: newBackwardX,
