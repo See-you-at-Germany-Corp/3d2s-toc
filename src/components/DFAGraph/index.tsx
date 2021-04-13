@@ -25,8 +25,8 @@ const DFAGraph: React.FC = () => {
                     <p>Finite Automata</p>
                 </div>
                 <div className="star star-right"></div>
-            </HeaderContainer>
-            <MapContainer style={{ width: "calc(100vw - 895px)" }}>
+            </HeaderContainer> 
+            <MapContainer> 
                 <MapInteractionCSS>
                     <img src={dfa_graph} alt="dfa-graph" />
                     <DFANode state={currentState} />
@@ -99,7 +99,7 @@ const HeaderContainer = styled.div`
 
 const MapContainer = styled.div`
     height: 1150px;
-    min-width: 400px;
+    width: calc(100vw - 895px);
     border-radius: 15px;
     border: 10px #e85f99 solid;
 

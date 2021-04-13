@@ -1,14 +1,14 @@
 import { atom } from "recoil";
 import { iMachine } from "../types/dfa.types";
 
-export const nodeRow = [200, 410, 620];
+export const nodeRow = [205, 416, 626];
 export const nodeCol = [
     216,
     539,
     853,
     1167,
     1481,
-    1794,
+    1795,
     2109,
     2423,
     2737,
@@ -122,7 +122,6 @@ const initialMachine: iMachine = {
             name: "RESULT",
             x: nodeCol[12],
             y: nodeRow[1],
-            isFinal: true,
         },
     ],
     transitions: [

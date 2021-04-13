@@ -20,6 +20,7 @@ const App = (): React.ReactElement => {
 
 const Container = styled.div<ContainerProps>`
     display: flex;
+    max-width: 100vw;
 `;
 
 export default App;
