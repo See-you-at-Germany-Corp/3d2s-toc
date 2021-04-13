@@ -22,8 +22,7 @@ const App = (): React.ReactElement => {
 
 const Container = styled.div<ContainerProps>`
     display: flex;
-    transform-origin: top left;
-    transform: scale(${(p) => p.scale});
+    max-width: 100vw;
 `;
 
 export default App;
