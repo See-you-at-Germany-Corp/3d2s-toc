@@ -17,3 +17,30 @@ export enum machineStateData {
     RELEASE,
     RESULT,
 }
+
+export const acceptString = [
+    {
+        id: 1,
+        strings: ["B"],
+    },
+    {
+        id: 2,
+        strings: ["B", "Y"],
+    },
+    {
+        id: 3,
+        strings: ["X", "Y"],
+    },
+    {
+        id: 4,
+        strings: ["W", "A", "S", "D", "X"],
+    },
+    {
+        id: 5,
+        strings: ["A", "S", "B"],
+    },
+    {
+        id: 6,
+        strings: ["X"],
+    },
+];

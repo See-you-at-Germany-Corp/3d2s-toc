@@ -9,6 +9,7 @@ export interface iState {
     id: number;
     name: string;
     isFinal?: boolean;
+    acceptedStringID: number;
 }
 
 export interface iTransition {
