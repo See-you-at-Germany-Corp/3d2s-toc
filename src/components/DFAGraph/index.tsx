@@ -16,9 +16,6 @@ import { swing, shake } from "../ClampMachine/style";
 const DFAGraph: React.FC = () => {
     const currentState = useRecoilValue(DFACurrentState);
 
-    const scale = window.innerHeight / 1450;
-    const calculatedWidth = (window.innerWidth - 870 * scale) / scale - 25;
-
     return (
         <Container>
             <HeaderContainer>
@@ -29,7 +26,7 @@ const DFAGraph: React.FC = () => {
                 </div>
                 <div className="star star-right"></div>
             </HeaderContainer>
-            <MapContainer style={{ width: calculatedWidth }}>
+            <MapContainer style={{ width: "calc(100vw - 895px)" }}>
                 <MapInteractionCSS>
                     <img src={dfa_graph} alt="dfa-graph" />
                     <DFANode state={currentState} />

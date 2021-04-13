@@ -5,14 +5,12 @@ import "./App.css";
 import ClampMachine from "./components/ClampMachine";
 import DFAGraph from "./components/DFAGraph";
 
-interface ContainerProps {
-    scale: number;
-}
+interface ContainerProps {}
 
 const App = (): React.ReactElement => {
     return (
         <RecoilRoot>
-            <Container id="dfa-clamp-machine" scale={window.innerHeight / 1450}>
+            <Container id="dfa-clamp-machine">
                 <ClampMachine />
                 <DFAGraph />
             </Container>
@@ -22,8 +20,6 @@ const App = (): React.ReactElement => {
 
 const Container = styled.div<ContainerProps>`
     display: flex;
-    transform-origin: top left;
-    transform: scale(${(p) => p.scale});
 `;
 
 export default App;
