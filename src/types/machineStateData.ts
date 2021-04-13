@@ -16,6 +16,7 @@ export enum machineStateData {
     MOVE_LEFT_GRAB,
     RELEASE,
     RESULT,
+    INPUT_ERROR,
 }
 
 export const acceptString = [

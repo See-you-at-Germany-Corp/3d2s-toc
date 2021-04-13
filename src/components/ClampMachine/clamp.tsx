@@ -53,15 +53,13 @@ const Clamp = (): React.ReactElement => {
 
         let newBackwardX: string[] = [];
         let newBackwardY: string[] = [];
-  
+
         if (row === 4)
-            for (let i: number = 0; i < 8; i++)
-                newBackwardY.push("S");
-        
+            for (let i: number = 0; i < 8; i++) newBackwardY.push("S");
+
         if (col === 0)
-            for (let i: number = 0; i < 8; i++)
-                newBackwardX.push("A");
-  
+            for (let i: number = 0; i < 8; i++) newBackwardX.push("A");
+
         for (let j: number = 0; j < backwardYAmount; j++)
             newBackwardY.push("S");
 
@@ -183,8 +181,49 @@ const Clamp = (): React.ReactElement => {
     }
 
     function inputToDFA(input: machineInput) {
-        setDFA(input);
-        setIsMStateChange(true);
+        function isDFACurrentStateAccept(
+            input: machineInput,
+            acceptedStringID: number
+        ): boolean {
+            let isAccept = false;
+
+            switch (acceptedStringID) {
+                case 1: {
+                    if (input === "B") isAccept = true;
+                    break;
+                }
+                case 2: {
+                    if (input === "B" || input === "Y") isAccept = true;
+                    break;
+                }
+                case 3: {
+                    if (input === "X" || input === "Y") isAccept = true;
+                    break;
+                }
+                case 4: {
+                    if (input !== "B" && input !== "Y") isAccept = true;
+                    break;
+                }
+                case 5: {
+                    if (input === "A" || input === "S" || input === "B")
+                        isAccept = true;
+                    break;
+                }
+                case 6: {
+                    if (input === "X") isAccept = true;
+                    break;
+                }
+                default:
+                    break;
+            }
+
+            return isAccept;
+        }
+
+        if (isDFACurrentStateAccept(input, DFACurrent.acceptedStringID)) {
+            setDFA(input);
+            setIsMStateChange(true);
+        }
     }
 
     function moveClampToStart() {
@@ -234,6 +273,9 @@ const Clamp = (): React.ReactElement => {
                 case "Space":
                     if (!DFADisableKeyLists.includes(DFACurrent.id))
                         inputToDFA("X");
+                    break;
+                case "KeyP":
+                    inputToDFA("Y");
                     break;
                 default:
                     break;
@@ -322,6 +364,11 @@ const Clamp = (): React.ReactElement => {
                 case machineStateData.RESULT: {
                     /// tricker result popup here.
                     setDisplay({ display: true, cycle: true });
+                    break;
+                }
+                case machineStateData.INPUT_ERROR: {
+                    alert("Input Error.");
+                    window.location.reload();
                     break;
                 }
 
