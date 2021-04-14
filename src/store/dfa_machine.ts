@@ -142,14 +142,14 @@ const initialMachine: iMachine = {
         },
         {
             id: 18,
-            name: "ERROR",
+            name: "ERROR_1",
             x: nodeCol[6],
             y: nodeRow[0],
             acceptedStringID: 6,
         },
         {
             id: 19,
-            name: "ERROR",
+            name: "ERROR_2",
             x: nodeCol[6],
             y: nodeRow[4],
             acceptedStringID: 6,

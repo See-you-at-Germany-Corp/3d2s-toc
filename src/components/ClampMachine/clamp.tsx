@@ -373,12 +373,11 @@ const Clamp = (): React.ReactElement => {
                     setDisplay({ display: true, cycle: true });
                     break;
                 }
-                case machineStateData.INPUT_ERROR: {
-                    alert("Input Error.");
-                    window.location.reload();
+                case machineStateData.INPUT_ERROR_1:
+                case machineStateData.INPUT_ERROR_2: {
+                    alert("Input Error: Please reload this page.");
                     break;
                 }
-
                 default:
                     break;
             }
