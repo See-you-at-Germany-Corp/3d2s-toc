@@ -369,7 +369,7 @@ const initialMachine: iMachine = {
         {
             from: 11,
             to: 18,
-            input: ["W", "A", "S", "D", "X", "Y"],
+            input: ["S"],
         },
         {
             from: 11,
@@ -379,12 +379,12 @@ const initialMachine: iMachine = {
         {
             from: 12,
             to: 18,
-            input: ["W", "A", "S", "D", "B", "Y"],
+            input: ["W", "A", "S", "D", "X", "Y"],
         },
         {
             from: 12,
             to: 13,
-            input: ["X"],
+            input: ["B"],
         },
         {
             from: 13,
@@ -408,8 +408,8 @@ const initialMachine: iMachine = {
         },
         {
             from: 14,
-            to: 18,
-            input: ["W", "S", "D", "X", "Y"],
+            to: 14,
+            input: ["S"],
         },
         {
             from: 14,
@@ -422,19 +422,29 @@ const initialMachine: iMachine = {
             input: ["B"],
         },
         {
+            from: 14,
+            to: 18,
+            input: ["W", "S", "D", "X", "Y"],
+        },
+        {
             from: 15,
             to: 14,
             input: ["S"],
         },
         {
             from: 15,
-            to: 19,
-            input: ["W", "A", "D", "X", "Y"],
+            to: 15,
+            input: ["A"],
         },
         {
             from: 15,
             to: 16,
             input: ["B"],
+        },
+        {
+            from: 15,
+            to: 19,
+            input: ["W", "D", "X", "Y"],
         },
         {
             from: 16,

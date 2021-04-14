@@ -124,7 +124,7 @@ const Clamp = (): React.ReactElement => {
     function getDollIndex(): number {
         const { row, col } = getClampArrayPos(clampPos, clampSize);
         const dollIndex: number = 5 * row + col;
-        // console.log("dollIndex :>> ", dollIndex);
+
         return dollIndex;
     }
 
@@ -181,8 +181,49 @@ const Clamp = (): React.ReactElement => {
     }
 
     function inputToDFA(input: machineInput) {
-        setDFA(input);
-        setIsMStateChange(true);
+        function isDFACurrentStateAccept(
+            input: machineInput,
+            acceptedStringID: number
+        ): boolean {
+            let isAccept = false;
+
+            switch (acceptedStringID) {
+                case 1: {
+                    if (input === "B") isAccept = true;
+                    break;
+                }
+                case 2: {
+                    if (input === "B" || input === "Y") isAccept = true;
+                    break;
+                }
+                case 3: {
+                    if (input === "X" || input === "Y") isAccept = true;
+                    break;
+                }
+                case 4: {
+                    if (input !== "B" && input !== "Y") isAccept = true;
+                    break;
+                }
+                case 5: {
+                    if (input === "A" || input === "S" || input === "B")
+                        isAccept = true;
+                    break;
+                }
+                case 6: {
+                    if (input === "X") isAccept = true;
+                    break;
+                }
+                default:
+                    break;
+            }
+
+            return isAccept;
+        }
+
+        if (isDFACurrentStateAccept(input, DFACurrent.acceptedStringID)) {
+            setDFA(input);
+            setIsMStateChange(true);
+        }
     }
 
     function moveClampToStart() {
@@ -233,6 +274,14 @@ const Clamp = (): React.ReactElement => {
                     if (!DFADisableKeyLists.includes(DFACurrent.id))
                         inputToDFA("X");
                     break;
+                case "KeyP":
+                    setDFA("Y");
+                    setIsMStateChange(true);
+                    break;
+                case "KeyB":
+                    setDFA("B");
+                    setIsMStateChange(true);
+                    break;
                 default:
                     break;
             }
@@ -281,20 +330,21 @@ const Clamp = (): React.ReactElement => {
                     break;
                 }
                 case machineStateData.GRAB: {
-                    setTimeout(setMovingDown, 500, false);
+                    setMovingDown(false);
                     if (!clampState.isGrab) {
                         grabDoll(isClampGetDoll());
                     }
-                    setTimeout(inputToDFA, 500, "B");
+                    if (!movingDown) {
+                        setTimeout(inputToDFA, 500, "B");
+                    }
                     break;
                 }
                 case machineStateData.MOVE_UP_GRAB: {
-                    console.log("UP GRAB");
-                    // setTimeout(setMovingDown, 500, false);
+                    setTimeout(inputToDFA, 500, "B");
                     break;
                 }
                 case machineStateData.READY_T0_BACK_GRAB: {
-                    moveClampToStart();
+                    setTimeout(moveClampToStart, 500);
                     break;
                 }
                 case machineStateData.MOVE_LEFT_GRAB: {
@@ -316,12 +366,16 @@ const Clamp = (): React.ReactElement => {
                         }));
                         inputToDFA("B");
                     }, 400);
-                    // setTimeout(inputToDFA, 1400, "B");
                     break;
                 }
                 case machineStateData.RESULT: {
                     /// tricker result popup here.
                     setDisplay({ display: true, cycle: true });
+                    break;
+                }
+                case machineStateData.INPUT_ERROR: {
+                    alert("Input Error.");
+                    // window.location.reload();
                     break;
                 }
 

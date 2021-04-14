@@ -1,5 +1,5 @@
 import React from "react";
-import _ from "lodash";
+import _, { clamp } from "lodash";
 import { useSetRecoilState, useRecoilValue, useRecoilState } from "recoil";
 
 import { DFASelector, DFACurrentState, clampStore } from "../../store";
@@ -125,7 +125,7 @@ const CoinBox = (): React.ReactElement => {
             }
             case machineStateData.RETURN_COIN: {
                 returnCoin();
-                setTimeout(setDFA, 600, "B");
+                if (clampState.coin === 0) setTimeout(setDFA, 700, "B");
                 break;
             }
             case machineStateData.READY_TO_GRAB: {
