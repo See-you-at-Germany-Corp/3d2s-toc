@@ -48,9 +48,9 @@ const Clamp = (): React.ReactElement => {
     function backwardCalculate(): IBackwardInput {
         const { row, col } = getClampArrayPos(clampPos, clampSize);
 
-        const backwardXAmount = col * 8;
-        const backwardYAmount = (4 - row) * 8;
-
+        const backwardXAmount = (col + 1) * 8;
+        const backwardYAmount = (4 - row + 1) * 8;
+        
         let newBackwardX: string[] = [];
         let newBackwardY: string[] = [];
 
