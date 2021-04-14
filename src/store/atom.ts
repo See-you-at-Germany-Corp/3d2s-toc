@@ -52,7 +52,7 @@ function randomDollItems(maxDoll: number = 20): number[] {
         }
         dollItems.push(_.random(1, 4));
     }
-
+    for (let i: number = 0; i < 25 - maxDoll; i++) dollItems.push(0);
     return dollItems;
 }
 

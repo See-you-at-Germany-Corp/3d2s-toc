@@ -22,7 +22,7 @@ const GamePopup = (props: PopupProps):React.ReactElement => {
             <Popup open={open} onClose={props.onClose}  modal> 
             <Container>
                 {
-                    !(props.data || props.data?.id === 0) ? <div></div> :
+                    props.data.id === 0 ? <div></div> :
                     <PartyCracker src={party}  
                         initial={{scaleX:-1}}
                         animate={{rotate:10}}
@@ -41,7 +41,7 @@ const GamePopup = (props: PopupProps):React.ReactElement => {
                 >
                     <MotionH1 variants={H1}>
                         {
-                            !(props.data || props.data?.id === 0) ? "Better Luck Next Time" : "Congratulations!"
+                            props.data.id === 0 ? "Better Luck Next Time" : "Congratulations!"
                         }
                         
                     </MotionH1>
@@ -65,7 +65,7 @@ const GamePopup = (props: PopupProps):React.ReactElement => {
                     >Continue</Button>
                 </PopupBody>
                 {
-                    !(props.data || props.data?.id === 0) ? <div></div> :
+                    props.data.id === 0 ? <div></div> :
                     <PartyCracker src={party} 
                         animate={{rotate:10}}
                         transition={{
