@@ -375,7 +375,7 @@ const Clamp = (): React.ReactElement => {
                 }
                 case machineStateData.INPUT_ERROR: {
                     alert("Input Error.");
-                    // window.location.reload();
+                    window.location.reload();
                     break;
                 }
 
