@@ -1,5 +1,5 @@
 import React from "react";
-import _, { clamp } from "lodash";
+import _ from "lodash";
 import { useSetRecoilState, useRecoilValue, useRecoilState } from "recoil";
 
 import { DFASelector, DFACurrentState, clampStore } from "../../store";
