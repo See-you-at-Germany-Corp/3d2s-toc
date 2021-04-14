@@ -20,6 +20,7 @@ import {
 } from "../../store";
 
 import { machineStateData } from "../../types/machineStateData";
+import { machineInput } from "../../types/machine.type";
 import { dollDatas } from "../Dolls/doll_data";
 import { DFADisableKeyLists } from "./clamp_data";
 
@@ -43,10 +44,51 @@ const ControlBox: React.FC = () => {
     const setDFA = useSetRecoilState(DFASelector);
     const setIsMStateChange = useSetRecoilState(isMStateStore);
 
-    function inputToDFA(input: "W" | "A" | "S" | "D" | "X") {
+    function inputToDFA(input: machineInput) {
+        function isDFACurrentStateAccept(
+            input: machineInput,
+            acceptedStringID: number
+        ): boolean {
+            let isAccept = false;
+
+            switch (acceptedStringID) {
+                case 1: {
+                    if (input === "B") isAccept = true;
+                    break;
+                }
+                case 2: {
+                    if (input === "B" || input === "Y") isAccept = true;
+                    break;
+                }
+                case 3: {
+                    if (input === "X" || input === "Y") isAccept = true;
+                    break;
+                }
+                case 4: {
+                    if (input !== "B" && input !== "Y") isAccept = true;
+                    break;
+                }
+                case 5: {
+                    if (input === "A" || input === "S" || input === "B")
+                        isAccept = true;
+                    break;
+                }
+                case 6: {
+                    if (input === "X") isAccept = true;
+                    break;
+                }
+                default:
+                    break;
+            }
+
+            return isAccept;
+        }
+
         if (!DFADisableKeyLists.includes(DFACurrent.id)) {
-            setDFA(input);
-            setIsMStateChange(true);
+            if (isDFACurrentStateAccept(input, DFACurrent.acceptedStringID)) {
+                setDFA(input);
+                setIsMStateChange(true);
+            }
         }
     }
 
