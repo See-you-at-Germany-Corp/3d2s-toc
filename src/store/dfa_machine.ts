@@ -1,21 +1,21 @@
 import { atom } from "recoil";
 import { iMachine } from "../types/dfa.types";
 
-export const nodeRow = [205, 416, 626];
+export const nodeRow = [105, 316, 527.5, 737, 947];
 export const nodeCol = [
-    216,
-    539,
-    853,
-    1167,
-    1481,
-    1795,
-    2109,
-    2423,
-    2737,
-    3051,
-    3365,
-    3679,
-    4003,
+    177.5,
+    502,
+    816,
+    1130,
+    1444,
+    1758,
+    2072,
+    2386,
+    2700,
+    3014,
+    3328,
+    3642,
+    3966,
 ];
 
 const initialMachine: iMachine = {
@@ -24,7 +24,7 @@ const initialMachine: iMachine = {
             id: 1,
             name: "IDLE",
             x: nodeCol[0],
-            y: nodeRow[1],
+            y: nodeRow[2],
             isFinal: true,
             acceptedStringID: 1,
         },
@@ -32,119 +32,133 @@ const initialMachine: iMachine = {
             id: 2,
             name: "FIRST_RETURRCOIN",
             x: nodeCol[1],
-            y: nodeRow[1],
+            y: nodeRow[2],
             acceptedStringID: 2,
         },
         {
             id: 3,
             name: "READY_TO_PLAY",
             x: nodeCol[2],
-            y: nodeRow[1],
+            y: nodeRow[2],
             acceptedStringID: 3,
         },
         {
             id: 4,
             name: "RETURN_COIN",
             x: nodeCol[1],
-            y: nodeRow[2],
+            y: nodeRow[3],
             acceptedStringID: 1,
         },
         {
             id: 5,
             name: "READY_TO_GRAB",
             x: nodeCol[3],
-            y: nodeRow[1],
+            y: nodeRow[2],
             acceptedStringID: 4,
         },
         {
             id: 6,
             name: "MOVE_FORWARD",
             x: nodeCol[4],
-            y: nodeRow[0],
+            y: nodeRow[1],
             acceptedStringID: 4,
         },
         {
             id: 7,
             name: "MOVE_RIGHT",
             x: nodeCol[5],
-            y: nodeRow[0],
+            y: nodeRow[1],
             acceptedStringID: 4,
         },
         {
             id: 8,
             name: "MOVE_LEFT",
             x: nodeCol[4],
-            y: nodeRow[2],
+            y: nodeRow[3],
             acceptedStringID: 4,
         },
         {
             id: 9,
             name: "MOVE_BACKWARD",
             x: nodeCol[5],
-            y: nodeRow[2],
+            y: nodeRow[3],
             acceptedStringID: 4,
         },
         {
             id: 10,
             name: "MOVE_DOWN",
             x: nodeCol[6],
-            y: nodeRow[1],
+            y: nodeRow[2],
             acceptedStringID: 1,
         },
         {
             id: 11,
             name: "GRAB",
             x: nodeCol[7],
-            y: nodeRow[1],
+            y: nodeRow[2],
             acceptedStringID: 1,
         },
         {
             id: 12,
             name: "MOVE_UP(GRAB)",
             x: nodeCol[8],
-            y: nodeRow[1],
+            y: nodeRow[2],
             acceptedStringID: 1,
         },
         {
             id: 13,
             name: "READY_T0_BACK(GRAB)",
             x: nodeCol[9],
-            y: nodeRow[1],
+            y: nodeRow[2],
             acceptedStringID: 5,
         },
         {
             id: 14,
             name: "MOVE_BACKKWARD(GRAB)",
             x: nodeCol[10],
-            y: nodeRow[0],
+            y: nodeRow[1],
             acceptedStringID: 5,
         },
         {
             id: 15,
             name: "MOVE_LEFT(GRAB)",
             x: nodeCol[10],
-            y: nodeRow[2],
+            y: nodeRow[3],
             acceptedStringID: 5,
         },
         {
             id: 16,
             name: "RELEASE",
             x: nodeCol[11],
-            y: nodeRow[1],
+            y: nodeRow[2],
             acceptedStringID: 1,
         },
         {
             id: 17,
             name: "RESULT",
             x: nodeCol[12],
-            y: nodeRow[1],
+            y: nodeRow[2],
+            acceptedStringID: 6,
+        },
+        {
+            id: 18,
+            name: "ERROR",
+            x: nodeCol[6],
+            y: nodeRow[0],
+            acceptedStringID: 6,
+        },
+        {
+            id: 19,
+            name: "ERROR",
+            x: nodeCol[6],
+            y: nodeRow[4],
             acceptedStringID: 6,
         },
     ],
     transitions: [
         {
             from: 1,
-            to: 1,
+            to: 18,
             input: ["X", "W", "A", "S", "D", "Y"],
         },
         {
@@ -154,7 +168,7 @@ const initialMachine: iMachine = {
         },
         {
             from: 2,
-            to: 2,
+            to: 18,
             input: ["X", "W", "A", "S", "D"],
         },
         {
@@ -169,7 +183,7 @@ const initialMachine: iMachine = {
         },
         {
             from: 3,
-            to: 3,
+            to: 18,
             input: ["B", "W", "A", "S", "D"],
         },
         {
@@ -189,12 +203,12 @@ const initialMachine: iMachine = {
         },
         {
             from: 4,
-            to: 4,
+            to: 19,
             input: ["W", "A", "S", "D", "X", "Y"],
         },
         {
             from: 5,
-            to: 5,
+            to: 19,
             input: ["B", "Y"],
         },
         {
@@ -224,7 +238,7 @@ const initialMachine: iMachine = {
         },
         {
             from: 6,
-            to: 5,
+            to: 18,
             input: ["B", "Y"],
         },
         {
@@ -254,7 +268,7 @@ const initialMachine: iMachine = {
         },
         {
             from: 7,
-            to: 5,
+            to: 18,
             input: ["B", "Y"],
         },
         {
@@ -284,7 +298,7 @@ const initialMachine: iMachine = {
         },
         {
             from: 8,
-            to: 5,
+            to: 19,
             input: ["B", "Y"],
         },
         {
@@ -314,7 +328,7 @@ const initialMachine: iMachine = {
         },
         {
             from: 9,
-            to: 5,
+            to: 19,
             input: ["B", "Y"],
         },
         {
@@ -344,7 +358,7 @@ const initialMachine: iMachine = {
         },
         {
             from: 10,
-            to: 10,
+            to: 18,
             input: ["W", "A", "S", "D", "X", "Y"],
         },
         {
@@ -354,7 +368,7 @@ const initialMachine: iMachine = {
         },
         {
             from: 11,
-            to: 11,
+            to: 18,
             input: ["W", "A", "S", "D", "X", "Y"],
         },
         {
@@ -364,17 +378,17 @@ const initialMachine: iMachine = {
         },
         {
             from: 12,
-            to: 12,
-            input: ["W", "A", "S", "D", "X", "Y"],
+            to: 18,
+            input: ["W", "A", "S", "D", "B", "Y"],
         },
         {
             from: 12,
             to: 13,
-            input: ["B"],
+            input: ["X"],
         },
         {
             from: 13,
-            to: 13,
+            to: 18,
             input: ["W", "D", "X", "Y"],
         },
         {
@@ -394,7 +408,7 @@ const initialMachine: iMachine = {
         },
         {
             from: 14,
-            to: 14,
+            to: 18,
             input: ["W", "S", "D", "X", "Y"],
         },
         {
@@ -414,7 +428,7 @@ const initialMachine: iMachine = {
         },
         {
             from: 15,
-            to: 15,
+            to: 19,
             input: ["W", "A", "D", "X", "Y"],
         },
         {
@@ -424,7 +438,7 @@ const initialMachine: iMachine = {
         },
         {
             from: 16,
-            to: 16,
+            to: 18,
             input: ["W", "A", "S", "D", "X", "Y"],
         },
         {
@@ -434,7 +448,7 @@ const initialMachine: iMachine = {
         },
         {
             from: 17,
-            to: 17,
+            to: 19,
             input: ["B", "W", "A", "S", "D", "Y"],
         },
         {

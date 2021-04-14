@@ -49,8 +49,7 @@ const Coin = (props: ICoinProps): React.ReactElement => {
                 right: 400 - index * 80,
                 bottom: 0,
             }}
-        > 
-        </CoinContainer>
+        ></CoinContainer>
     );
 };
 
@@ -126,7 +125,7 @@ const CoinBox = (): React.ReactElement => {
             }
             case machineStateData.RETURN_COIN: {
                 returnCoin();
-                setDFA("B");
+                setTimeout(setDFA, 600, "B");
                 break;
             }
             case machineStateData.READY_TO_GRAB: {

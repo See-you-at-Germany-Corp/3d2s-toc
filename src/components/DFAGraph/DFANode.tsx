@@ -15,7 +15,11 @@ interface ContainerProps {
 const DFANode: React.FC<Props> = memo((props) => {
     const nodeSize = props.state.isFinal ? 136 : 120;
 
-    return <Container x={props.state.x} y={props.state.y} size={nodeSize} />;
+    return (
+        <Container x={props.state.x} y={props.state.y} size={nodeSize}>
+            {props.state.id}
+        </Container>
+    );
 });
 
 const Container = styled.div<ContainerProps>`

@@ -53,15 +53,13 @@ const Clamp = (): React.ReactElement => {
 
         let newBackwardX: string[] = [];
         let newBackwardY: string[] = [];
-  
+
         if (row === 4)
-            for (let i: number = 0; i < 8; i++)
-                newBackwardY.push("S");
-        
+            for (let i: number = 0; i < 8; i++) newBackwardY.push("S");
+
         if (col === 0)
-            for (let i: number = 0; i < 8; i++)
-                newBackwardX.push("A");
-  
+            for (let i: number = 0; i < 8; i++) newBackwardX.push("A");
+
         for (let j: number = 0; j < backwardYAmount; j++)
             newBackwardY.push("S");
 
@@ -283,7 +281,7 @@ const Clamp = (): React.ReactElement => {
                     break;
                 }
                 case machineStateData.GRAB: {
-                    setMovingDown(false);
+                    setTimeout(setMovingDown, 500, false);
                     if (!clampState.isGrab) {
                         grabDoll(isClampGetDoll());
                     }
@@ -291,6 +289,8 @@ const Clamp = (): React.ReactElement => {
                     break;
                 }
                 case machineStateData.MOVE_UP_GRAB: {
+                    console.log("UP GRAB");
+                    // setTimeout(setMovingDown, 500, false);
                     break;
                 }
                 case machineStateData.READY_T0_BACK_GRAB: {
