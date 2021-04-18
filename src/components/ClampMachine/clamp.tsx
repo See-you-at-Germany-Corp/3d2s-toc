@@ -50,7 +50,7 @@ const Clamp = (): React.ReactElement => {
 
         const backwardXAmount = (col + 1) * 8;
         const backwardYAmount = (4 - row + 1) * 8;
-        
+
         let newBackwardX: string[] = [];
         let newBackwardY: string[] = [];
 
@@ -365,7 +365,7 @@ const Clamp = (): React.ReactElement => {
                             isHave: false,
                         }));
                         inputToDFA("B");
-                    }, 400);
+                    }, 600);
                     break;
                 }
                 case machineStateData.RESULT: {
